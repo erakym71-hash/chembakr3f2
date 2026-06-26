@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة chembakr | الاختبار الاسترشادي الأول 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti for Visual Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f4f6;
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.08"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        /* --- تنسيقات الاختيارات المتطابقة مع الصورة المرفقة --- */
+        .option-label {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem; 
+            padding: 1.25rem 1.5rem;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .option-label:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+
+        .option-radio:checked + .option-label {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            box-shadow: 0 0 0 1px #3b82f6;
+        }
+
+        .option-letter {
+            width: 2.75rem;
+            height: 2.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fafb;
+            color: #4b5563;
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-left: 1.25rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .option-radio:checked + .option-label .option-letter {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .opt-content {
+            font-family: 'Cairo', sans-serif !important;
+            font-weight: 700 !important;
+            color: #1f2937 !important;
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        /* --- توحيد حجم الخط في كافة أجزاء السؤال --- */
+        .unified-font-size {
+            color: #1f2937 !important;
+        }
+        
+        .unified-font-size div,
+        .unified-font-size span:not(.note-small),
+        .unified-font-size p,
+        .unified-font-size table,
+        .unified-font-size th,
+        .unified-font-size td,
+        .opt-content,
+        .opt-content span {
+            font-size: 1.4rem !important; 
+            line-height: 1.8 !important;
+        }
+
+        .unified-font-size table {
+            margin-top: 1.5rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .unified-font-size th, 
+        .unified-font-size td {
+            padding: 1rem !important;
+            font-weight: 800 !important;
+        }
+
+        /* تنسيقات المعادلات الكيميائية والأرقام */
+        .opt-content span[dir="ltr"], .unified-font-size span[dir="ltr"] {
+            display: inline-block;
+            direction: ltr;
+        }
+
+        .opt-content sub, .opt-content sup,
+        .unified-font-size sub, .unified-font-size sup {
+            font-size: 0.7em !important;
+            font-weight: 900 !important;
+            line-height: 0 !important;
+            position: relative !important;
+            vertical-align: baseline !important;
+        }
+        .opt-content sup, .unified-font-size sup { top: -0.5em !important; }
+        .opt-content sub, .unified-font-size sub { bottom: -0.25em !important; }
+
+        .note-small {
+            font-size: 1.05rem !important;
+            color: #6b7280 !important;
+        }
+
+        /* حالات الإجابة الصحيحة والخاطئة */
+        .correct-answer {
+            border-color: #10b981 !important;
+            background-color: #f0fdf4 !important;
+            box-shadow: 0 0 0 1px #10b981 !important;
+            animation: pulse-green 1s;
+        }
+
+        .correct-answer .option-letter {
+            background-color: #10b981 !important;
+            color: white !important;
+            border-color: #10b981 !important;
+        }
+
+        .wrong-answer {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 1px #ef4444 !important;
+            animation: shake 0.5s;
+        }
+
+        .wrong-answer .option-letter {
+            background-color: #ef4444 !important;
+            color: white !important;
+            border-color: #ef4444 !important;
+        }
+
+        #question-text {
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 2rem;
+        }
+
+        /* --- تكبير نص السؤال الرئيسي --- */
+        .question-body-text {
+            font-size: 1.45rem !important;
+            font-weight: 800 !important;
+            color: #111827 !important;
+            line-height: 2 !important;
+        }
+        
+        .question-body-text > span:not(.note-small) {
+            font-size: inherit !important;
+        }
+        
+        .question-body-text div,
+        .question-body-text table,
+        .question-body-text th,
+        .question-body-text td {
+            font-size: 1.4rem !important;
+            font-weight: 800 !important;
+            line-height: 1.8 !important;
+        }
+        
+        .question-body-text div span:not(.note-small) {
+            font-size: 1.4rem !important;
+        }
+        
+        .question-body-text sub, .question-body-text sup {
+            font-size: 0.7em !important;
+            font-weight: 900 !important;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .explanation-box {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+
+        .explanation-box.show {
+            max-height: 5000px;
+            padding: 1.5rem;
+        }
+
+        .nav-btn {
+            transition: all 0.2s;
+        }
+        .nav-btn.active {
+            box-shadow: 0 0 0 3px #3b82f6;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .nav-btn.correct { background-color: #10b981; color: white; border-color: #059669; }
+        .nav-btn.wrong { background-color: #ef4444; color: white; border-color: #b91c1c; }
+        .nav-btn.unanswered { background-color: #f3f4f6; color: #374151; border-color: #e5e7eb; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-6 px-4">
+
+    <div class="w-full max-w-6xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col md:flex-row">
+        
+        <!-- Sidebar Navigation -->
+        <div class="w-full md:w-1/4 bg-gray-50 border-b md:border-b-0 md:border-l border-gray-200 p-6 flex flex-col">
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-blue-100 rounded-full mb-2">
+                    <i class="fa-solid fa-layer-group text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="font-bold text-lg text-gray-800">قائمة الأسئلة</h3>
+                <p class="text-xs text-gray-500">اختر سؤالاً للانتقال إليه</p>
+            </div>
+            
+            <div id="navigation-grid" class="grid grid-cols-5 gap-2">
+                <!-- Buttons will be injected here by JS -->
+            </div>
+            
+            <div class="mt-8 text-xs text-gray-600 space-y-3 border-t pt-6">
+                <div class="flex items-center gap-2 font-semibold"><span class="w-4 h-4 rounded-full bg-green-500 border border-green-600"></span> إجابة صحيحة</div>
+                <div class="flex items-center gap-2 font-semibold"><span class="w-4 h-4 rounded-full bg-red-500 border border-red-600"></span> إجابة خاطئة</div>
+                <div class="flex items-center gap-2 font-semibold"><span class="w-4 h-4 rounded-full bg-gray-200 border border-gray-300"></span> لم تتم الإجابة</div>
+            </div>
+        </div>
+
+        <!-- Main Quiz Area -->
+        <div class="w-full md:w-3/4 flex flex-col">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-6 md:p-8 relative overflow-hidden flex-shrink-0">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-xl"></div>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <span class="bg-yellow-400 text-yellow-900 text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-sm">كيمياء الصف الثالث الثانوي</span>
+                    <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                        <i class="fa-solid fa-atom text-blue-300 animate-spin-slow"></i> chembakr
+                    </span>
+                </div>
+                
+                <h1 class="text-2xl font-bold md:text-3xl text-center relative z-10 mt-2 mb-4">الاختبار الاسترشادي الأول 2026</h1>
+                
+                <!-- Progress -->
+                <div class="mt-4 bg-blue-900/50 rounded-full h-2.5 mb-2 relative z-10">
+                    <div id="progress-bar" class="bg-yellow-400 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm text-blue-100 relative z-10 font-medium">
+                    <span id="question-tracker">السؤال 1 من 46</span>
+                    <span id="score-tracker" class="bg-blue-800/50 px-3 py-1 rounded-lg">النقاط: 0</span>
+                </div>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-container" class="p-6 md:p-10 flex-grow bg-white">
+                
+                <!-- Question Content -->
+                <div id="question-text">
+                </div>
+
+                <!-- Options -->
+                <div id="options-container" class="flex flex-col gap-2 mb-8">
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 border-t border-gray-200 pt-6 mt-4">
+                    <button id="confirm-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-lg" onclick="confirmAnswer()">
+                        <i class="fa-solid fa-check-circle"></i> تأكيد الإجابة
+                    </button>
+                    <button id="next-btn" class="hidden w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-lg" onclick="nextQuestion()">
+                        السؤال التالي <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <button id="explain-btn" class="hidden w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 text-lg" onclick="toggleExplanation()">
+                        <i class="fa-solid fa-lightbulb"></i> الشرح التفصيلي
+                    </button>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-container" class="explanation-box bg-yellow-50 border-r-4 border-yellow-400 rounded-l-xl mt-8 text-gray-800 shadow-sm">
+                </div>
+
+            </div>
+
+            <!-- Result Container -->
+            <div id="result-container" class="hidden p-10 text-center flex-grow flex flex-col justify-center items-center">
+                <div class="inline-flex p-8 rounded-full bg-blue-50 mb-6 shadow-inner">
+                    <i class="fa-solid fa-trophy text-7xl text-yellow-500 drop-shadow-md"></i>
+                </div>
+                <h2 class="text-4xl font-black mb-3 text-gray-800">انتهى الاختبار!</h2>
+                <p class="text-xl text-gray-600 mb-8">لقد أتممت حل الاختبار الاسترشادي بنجاح.</p>
+            
+                <div class="text-6xl font-black text-blue-600 mb-6" dir="ltr">
+                    <span id="final-score">0</span> <span class="text-4xl text-gray-400">/</span> <span id="total-score" class="text-5xl text-gray-700">46</span>
+                </div>
+            
+                <div id="motivational-message" class="text-xl font-bold p-6 rounded-2xl mb-10 w-full max-w-2xl leading-relaxed">
+                </div>
+
+                <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-md inline-flex items-center justify-center gap-3 text-xl hover:scale-105">
+                    <i class="fa-solid fa-rotate-right"></i> إعادة الاختبار
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const quizData = [
+            // 1
+            {
+                question: `عنصر من السلسلة الانتقالية الأولى، أحد مركباته يستخدم في الأصباغ.<br>أي الاختيارات التالية يعبر عن التركيب الإلكتروني لأيون هذا العنصر في هذا المركب ؟`,
+                options: [
+                    "<span dir='ltr'>[Ar] 4s<sup>1</sup> 3d<sup>5</sup></span>",
+                    "<span dir='ltr'>[Ar] 3d<sup>3</sup></span>",
+                    "<span dir='ltr'>[Ar] 4s<sup>2</sup> 3d<sup>3</sup></span>",
+                    "<span dir='ltr'>[Ar] 3d<sup>2</sup></span>"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>العنصر الذي يستخدم أحد مركباته في الأصباغ هو الكروم (مركب أكسيد الكروم الثلاثي Cr₂O₃ يستخدم في عمل الأصباغ الخضراء). الكروم توزيعه الشاذ هو [Ar] 4s¹ 3d⁵. في مركب Cr₂O₃ يكون عدد تأكسد الكروم +3، وبالتالي يفقد إلكترون الـ 4s وإلكترونين من الـ 3d، فيصبح تركيبه الأيوني [Ar] 3d³.</p>`,
+                optionsExplanation: [
+                    "هذا التوزيع يمثل ذرة الكروم المتعادلة وليس الأيون.",
+                    "إجابة صحيحة، يمثل أيون الكروم الثلاثي Cr⁺³.",
+                    "توزيع غير صحيح للأيون المطلوب.",
+                    "توزيع غير صحيح في حالة التأكسد."
+                ]
+            },
+            // 2
+            {
+                question: `أي مما يلي يعبر عن التوزيع الإلكتروني لأيون عنصر <strong>غير انتقالي</strong> ؟`,
+                options: [
+                    "<span dir='ltr'>X<sup>3+</sup> : [Ne] 3s<sup>2</sup> 3p<sup>6</sup></span>",
+                    "<span dir='ltr'>Y<sup>2+</sup> : [Ar] 3d<sup>6</sup></span>",
+                    "<span dir='ltr'>Z<sup>2+</sup> : [Ne] 3s<sup>2</sup> 3p<sup>6</sup></span>",
+                    "<span dir='ltr'>W<sup>3+</sup> : [Kr] 4d<sup>7</sup></span>"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>فكرة السؤال تعتمد على حساب العدد الذري للعنصر من خلال أيونه لمعرفة نوعه.<br>
+                - الأيون X³⁺ توزيعه ينتهي بـ 3p⁶ (وهو نفس توزيع غاز الأرجون 18). إذن العدد الذري للعنصر X = 18 + 3 = 21. هذا هو <strong>السكانديوم (Sc)</strong>، وهو عنصر انتقالي.<br>
+                - الأيون Z²⁺ توزيعه ينتهي بـ 3p⁶ (أرجون 18). إذن العدد الذري للعنصر Z = 18 + 2 = 20. هذا هو <strong>الكالسيوم (Ca)</strong>، وهو عنصر ممثل (غير انتقالي).<br>
+                إذن، Z هو العنصر غير الانتقالي.</p>`,
+                optionsExplanation: [
+                    "يمثل أيون السكانديوم (Sc=21) وهو عنصر انتقالي.",
+                    "يحتوي على 3d⁶ فهو أيون لعنصر انتقالي (كالحديد الثنائي).",
+                    "إجابة صحيحة ومخادعة! يمثل أيون الكالسيوم (Ca=20) وهو عنصر غير انتقالي.",
+                    "يحتوي على 4d⁷ فهو أيون لعنصر انتقالي في السلسلة الثانية."
+                ]
+            },
+            // 3
+            {
+                question: `أربعة أنابيب اختبار، يحتوي كل منها على محلول ملح كما بالجدول التالي:<br>
+                <div class="overflow-x-auto my-4 w-full max-w-xl mx-auto">
+                    <table class="w-full text-center border-collapse border-2 border-gray-300">
+                        <thead><tr class="bg-gray-100"><th class="border border-gray-300 p-2">W</th><th class="border border-gray-300 p-2">Z</th><th class="border border-gray-300 p-2">Y</th><th class="border border-gray-300 p-2">X</th></tr></thead>
+                        <tbody><tr><td class="border border-gray-300 p-2" dir="ltr">V(NO<sub>3</sub>)<sub>5</sub></td><td class="border border-gray-300 p-2" dir="ltr">Ti(NO<sub>3</sub>)<sub>3</sub></td><td class="border border-gray-300 p-2" dir="ltr">Fe(NO<sub>3</sub>)<sub>2</sub></td><td class="border border-gray-300 p-2" dir="ltr">Mn(NO<sub>3</sub>)<sub>2</sub></td></tr></tbody>
+                    </table>
+                </div>
+                أي هذه الأنابيب يجب تغطيتها حتى لا يتغير تركيب المحلول بداخلها ؟`,
+                options: [
+                    "W",
+                    "Z",
+                    "Y",
+                    "X"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>الأنبوبة التي يجب تغطيتها (منع تعرضها للهواء) هي التي تحتوي على مادة سهلة التأكسد. محلول نترات الحديد الثنائي Y (Fe(NO₃)₂) يتأكسد بسهولة في الهواء إلى نترات الحديد الثلاثي الأكثر استقراراً (حيث 3d⁵ نصف ممتلئ). لذلك يجب حمايته من الهواء.</p>`,
+                optionsExplanation: [
+                    "الفاناديوم الخماسي مستقر ولا يتأكسد بسهولة.",
+                    "التيتانيوم الثلاثي أقل عرضة للتأكسد السريع مقارنة بالحديد الثنائي.",
+                    "إجابة صحيحة، الحديد الثنائي يتأكسد بسهولة جداً للحديد الثلاثي المستقر.",
+                    "المنجنيز الثنائي (3d⁵) مستقر جداً ويصعب أكسدته للثلاثي."
+                ]
+            },
+            // 4
+            {
+                question: `عنصران انتقاليان متتاليان Y , X من السلسلة الانتقالية الأولى ويحتويان نفس عدد الإلكترونات في المستوى الفرعي 3d.<br>أي مما يلي يُعد صحيحا ؟`,
+                options: [
+                    "شحنة النواة الفعالة للعنصر X أكبر من شحنة النواة الفعالة للعنصر Y",
+                    "نصف قطر العنصر X أصغر من نصف قطر العنصر Y",
+                    "نصف قطر العنصر X يساوي تقريباً نصف قطر العنصر Y",
+                    "التنافر بين إلكترونات 3d للعنصر X أقل من التنافر بين إلكترونات 3d للعنصر Y"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>العنصران المتتاليان اللذان يمتلكان نفس عدد إلكترونات 3d هما الكروم Cr (4s¹ 3d⁵) والمنجنيز Mn (4s² 3d⁵). وبما أنهما متتاليان في السلسلة الانتقالية الأولى، فإن نصف القطر الذري لهما يكون متقارباً جداً (يكاد يكون متساوياً) بسبب الثبات النسبي لنصف القطر من الكروم إلى النحاس.</p>`,
+                optionsExplanation: [
+                    "خطأ، شحنة النواة الفعالة تزداد بزيادة العدد الذري.",
+                    "خطأ، أنصاف الأقطار متقاربة جداً في هذه المنطقة.",
+                    "إجابة صحيحة، يتميز الجزء من الكروم للنحاس بثبات نسبي في نصف القطر.",
+                    "خطأ، كلاهما يمتلك نفس العدد من إلكترونات 3d."
+                ]
+            },
+            // 5
+            {
+                question: `أي مما يلى يعبر عن التغير الحادث لخام السيدريت عند تسخينه في الهواء؟`,
+                options: [
+                    "تزداد كتلته وتزداد فيه نسبة الحديد",
+                    "تقل كتلته وتزداد فيه نسبة الحديد",
+                    "تقل كتلته وتقل فيه نسبة الحديد",
+                    "تزداد كتلته وتقل فيه نسبة الحديد"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>عند تسخين السيدريت (كربونات الحديد الثنائي FeCO₃) في الهواء (التحميص):<br>1- ينحل حرارياً ليعطي FeO وتتصاعد غازات (تقل الكتلة).<br>2- يتأكسد FeO إلى Fe₂O₃ (الهيماتيت).<br>النتيجة النهائية هي التخلص من الشوائب الغازية والرطوبة، مما يؤدي إلى انخفاض الكتلة الكلية للخام، وبالتالي تزداد نسبة الحديد فيه.</p>`,
+                optionsExplanation: [
+                    "الكتلة تقل بسبب تصاعد غاز ثاني أكسيد الكربون.",
+                    "إجابة صحيحة، تتصاعد الغازات فتقل الكتلة الكلية وتتركز نسبة الحديد.",
+                    "نسبة الحديد تزداد ولا تقل.",
+                    "الكتلة تقل ولا تزداد."
+                ]
+            },
+            // 6
+            {
+                question: `أي مما يلي يعبر عن أثر الغاز الناتج من (تفاعل حمض الهيدروكلوريك المخفف مع كبريتيت الصوديوم)؟`,
+                options: [
+                    "يحول لون ورقة مبللة بمحلول ثانى كرومات البوتاسيوم المحمضة إلى الأخضر",
+                    "لا يزيل لون محلول برمنجنات البوتاسيوم المحمضة بحمض الكبريتيك المركز",
+                    "يسود ورقة مبللة بمحلول أسيتات الرصاص II",
+                    "يحول لون ورقة مبللة بالنشا إلى اللون الأصفر"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>تفاعل حمض HCl مع كبريتيت الصوديوم (Na₂SO₃) ينتج غاز ثاني أكسيد الكبريت (SO₂). هذا الغاز عامل مختزل، يقوم باختزال ثاني كرومات البوتاسيوم المحمضة (البرتقالية) إلى كبريتات الكروم الثلاثي (الخضراء).</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، غاز SO₂ يخضر ورقة مبللة بثاني كرومات البوتاسيوم المحمضة.",
+                    "بل يزيل لونها لأنه عامل مختزل.",
+                    "الغاز الذي يسود أسيتات الرصاص هو H₂S وليس SO₂.",
+                    "الغاز الذي يصفر ورقة النشا هو أبخرة البروم."
+                ]
+            },
+            // 7
+            {
+                question: `أي التفاعلات التالية ينتج عنه راسب؟`,
+                options: [
+                    "غاز كبريتيد الهيدروجين مع محلول أسيتات الرصاص II",
+                    "محلول ثيوكبريتات الصوديوم مع محلول اليود البنى",
+                    "غاز ثاني أكسيد الكبريت مع محلول ثانى كرومات البوتاسيوم المحمضة",
+                    "محلول نيتريت الصوديوم مع محلول برمنجنات البوتاسيوم المحمضة"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>تفاعل غاز كبريتيد الهيدروجين (H₂S) مع أسيتات الرصاص II ينتج كبريتيد الرصاص (PbS) وهو عبارة عن راسب أسود. باقي التفاعلات تنتج محاليل ذائبة أو تغير في الألوان دون تكوين رواسب صلبة.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، يتكون راسب أسود من كبريتيد الرصاص PbS.",
+                    "يزول اللون البني لليود لتكون محاليل عديمة اللون.",
+                    "يتحول اللون للأخضر لتكون محلول كبريتات الكروم الثلاثي الذائب.",
+                    "يزول اللون البنفسجي لتكون محاليل ذائبة عديمة اللون."
+                ]
+            },
+            // 8
+            {
+                question: `عند تفاعل حمض الكبريتيك المركز الساخن مع الملح (X) يتصاعد غاز يصعب أكسدته بالحمض، وعند تفاعل نفس الحمض مع الملح (Y) يتصاعد غاز يتأكسد جزئياً.<br>فإن الملحين (X, Y) هما:`,
+                options: [
+                    "X: كلوريد صوديوم ، Y: يوديد صوديوم",
+                    "X: بروميد صوديوم ، Y: يوديد صوديوم",
+                    "X: نترات صوديوم ، Y: كربونات صوديوم",
+                    "X: كلوريد صوديوم ، Y: كبريتات صوديوم"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>الملح X يتصاعد منه غاز يصعب أكسدته بالحمض: هو غاز HCl المتصاعد من الكلوريد. <br>الملح Y يتصاعد منه غاز يتأكسد جزئياً: هو غاز HI المتصاعد من اليوديد والذي يتأكسد جزئيا بحمض الكبريتيك مكونا أبخرة اليود البنفسجية.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، HCl لا يتأكسد بالحمض، بينما HI يتأكسد جزئيا.",
+                    "HBr يتأكسد جزئيا أيضا.",
+                    "لا تتطابق مع خواص الغازات المتصاعدة (NO2 يتصاعد من النترات).",
+                    "الكبريتات لا تتفاعل مع حمض الكبريتيك."
+                ]
+            },
+            // 9
+            {
+                question: `عند إضافة محلول كلوريد الباريوم لمحلول الملح (X) تكون راسب أبيض يذوب في الأحماض المخففة، وعند إضافة محلول أسيتات الرصاص II إلى محلول الملح (Y) تكون راسب أبيض.<br>أي مما يلى يعبر عن أنيوني الملحين (X) و (Y) ؟`,
+                options: [
+                    "أنيون الملح X: فوسفات ، أنيون الملح Y: كبريتات",
+                    "أنيون الملح X: فوسفات ، أنيون الملح Y: كبريتيد",
+                    "أنيون الملح X: كبريتات ، أنيون الملح Y: فوسفات",
+                    "أنيون الملح X: كلوريد ، أنيون الملح Y: كبريتات"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>الملح X مع كلوريد الباريوم يعطي راسب أبيض يذوب في الحمض: هذا يدل على أنيون الفوسفات (فوسفات الباريوم راسب أبيض يذوب في HCl).<br>الملح Y مع أسيتات الرصاص يعطي راسب أبيض: هذا يدل على أنيون الكبريتات (كبريتات الرصاص راسب أبيض).</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، فوسفات الباريوم يذوب في الحمض، وكبريتات الرصاص راسب أبيض.",
+                    "كبريتيد الرصاص راسب أسود وليس أبيض.",
+                    "كبريتات الباريوم راسب أبيض لا يذوب في الأحماض.",
+                    "كلوريد الباريوم لا يرسب الكلوريد."
+                ]
+            },
+            // 10
+            {
+                question: `من المخطط التالي:<br>
+                <div class="w-full flex justify-center py-4 overflow-x-auto" dir="ltr" style="scrollbar-width: thin;">
+                    <div class="flex items-center justify-between gap-3 md:gap-4 min-w-max px-2">
+                        <!-- النتيجة اليسرى -->
+                        <div class="flex-shrink-0 text-xs md:text-sm font-bold text-black text-center whitespace-nowrap" dir="rtl">راسب أبيض</div>
+                        
+                        <!-- السهم الأيسر -->
+                        <div class="flex flex-col items-center flex-shrink-0">
+                            <div class="text-[10px] md:text-xs font-bold text-black mb-1 whitespace-nowrap text-center" dir="rtl">حمض كبريتيك مخفف</div>
+                            <div class="flex items-center w-20 md:w-24">
+                                <div class="w-2 h-2 border-t-[2px] border-l-[2px] border-black transform -rotate-45 translate-x-[2px] z-10"></div>
+                                <div class="h-[2px] bg-black w-full"></div>
+                            </div>
+                            <div class="text-[10px] md:text-xs font-bold text-transparent mt-1 select-none whitespace-nowrap">spacer</div>
+                        </div>
+                        
+                        <!-- المربع الأوسط -->
+                        <div class="border-2 border-black px-4 md:px-5 py-1.5 bg-white flex items-center justify-center shadow-sm flex-shrink-0">
+                            <span class="text-base md:text-xl font-bold font-mono text-black">X<sup>2+</sup></span>
+                        </div>
+                        
+                        <!-- السهم الأيمن -->
+                        <div class="flex flex-col items-center flex-shrink-0">
+                            <div class="text-[10px] md:text-xs font-bold text-black mb-1 text-center leading-tight" dir="rtl">محلول كربونات<br>صوديوم</div>
+                            <div class="flex items-center w-20 md:w-24">
+                                <div class="h-[2px] bg-black w-full"></div>
+                                <div class="w-2 h-2 border-t-[2px] border-r-[2px] border-black transform rotate-45 -translate-x-[2px] z-10"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- النتيجة اليمنى -->
+                        <div class="flex-shrink-0 text-xs md:text-sm font-bold text-black text-center whitespace-nowrap" dir="rtl">راسب أبيض</div>
+                    </div>
+                </div>
+                أي مما يلي يعبر عن الكاتيون <span dir="ltr" class="font-mono font-bold mx-1 text-indigo-700">X<sup>2+</sup></span> ؟`,
+                options: [
+                    "<span dir='ltr'>Ca<sup>2+</sup></span>",
+                    "<span dir='ltr'>Cu<sup>2+</sup></span>",
+                    "<span dir='ltr'>Mg<sup>2+</sup></span>",
+                    "<span dir='ltr'>Fe<sup>2+</sup></span>"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>الكاتيون الذي يُرسب على هيئة كربونات (راسب أبيض من كربونات الكالسيوم) ويُرسب أيضاً مع حمض الكبريتيك المخفف (راسب أبيض من كبريتات الكالسيوم) هو كاتيون الكالسيوم Ca²⁺ في المجموعة التحليلية الخامسة.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، الكالسيوم يكون كربونات الكالسيوم وكبريتات الكالسيوم وهما رواسب بيضاء.",
+                    "النحاس كبريتاته تذوب في الماء ولا تكون راسباً مع حمض الكبريتيك المخفف.",
+                    "كبريتات الماغنسيوم تذوب في الماء وليست راسباً.",
+                    "كبريتات الحديد الثنائي تذوب في الماء وليست راسباً."
+                ]
+            },
+
+            // 11
+            {
+                question: `من الأشكال البيانية التالية:<br>
+                <div class="flex flex-row-reverse justify-center gap-6 md:gap-16 w-full mt-8 mb-6" dir="ltr">
+                    <!-- الشكل X (يمين) -->
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 200 170" class="w-full max-w-[220px]" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <marker id="arrow11x" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937" />
+                                </marker>
+                            </defs>
+                            <line x1="20" y1="25" x2="20" y2="140" stroke="#1f2937" stroke-width="2.5" marker-end="url(#arrow11x)" />
+                            <line x1="20" y1="140" x2="180" y2="140" stroke="#1f2937" stroke-width="2.5" marker-end="url(#arrow11x)" />
+                            
+                            <text x="20" y="15" font-family="Cairo, sans-serif" font-size="14" fill="black" font-weight="bold" text-anchor="middle">التركيز</text>
+                            <text x="180" y="158" font-family="Cairo, sans-serif" font-size="14" fill="black" font-weight="bold" text-anchor="end">الزمن</text>
+                            
+                            <path d="M 20 40 Q 60 120 100 120 L 160 120" fill="none" stroke="#dc2626" stroke-width="3" />
+                            <path d="M 20 140 Q 60 50 100 50 L 160 50" fill="none" stroke="#1d4ed8" stroke-width="3" />
+                            
+                            <text x="100" y="165" font-family="Arial" font-size="18" fill="#dc2626" font-weight="bold" text-anchor="middle">(X)</text>
+                        </svg>
+                    </div>
+                    <!-- الشكل Y (يسار) -->
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 200 170" class="w-full max-w-[220px]" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <marker id="arrow11y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937" />
+                                </marker>
+                            </defs>
+                            <line x1="20" y1="25" x2="20" y2="140" stroke="#1f2937" stroke-width="2.5" marker-end="url(#arrow11y)" />
+                            <line x1="20" y1="140" x2="180" y2="140" stroke="#1f2937" stroke-width="2.5" marker-end="url(#arrow11y)" />
+                            
+                            <text x="20" y="15" font-family="Cairo, sans-serif" font-size="14" fill="black" font-weight="bold" text-anchor="middle">التركيز</text>
+                            <text x="180" y="158" font-family="Cairo, sans-serif" font-size="14" fill="black" font-weight="bold" text-anchor="end">الزمن</text>
+                            
+                            <path d="M 20 40 Q 60 85 100 85 L 160 85" fill="none" stroke="#dc2626" stroke-width="3" />
+                            <path d="M 20 140 Q 60 105 100 105 L 160 105" fill="none" stroke="#1d4ed8" stroke-width="3" />
+                            
+                            <text x="100" y="165" font-family="Arial" font-size="18" fill="#dc2626" font-weight="bold" text-anchor="middle">(Y)</text>
+                        </svg>
+                    </div>
+                </div>
+                أي العبارات التالية يُعد صحيحاً؟`,
+                options: [
+                    "الشكل (X) : <span dir='ltr'>K<sub>c</sub> = 1</span> والاتجاه العكسي هو السائد",
+                    "الشكل (Y) : <span dir='ltr'>K<sub>c</sub> = 1</span> والاتجاه الطردي هو السائد",
+                    "الشكل (X) : <span dir='ltr'>K<sub>c</sub> &gt; 1</span> والاتجاه الطردي هو السائد",
+                    "الشكل (Y) : <span dir='ltr'>K<sub>c</sub> &gt; 1</span> والاتجاه العكسي هو السائد"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>تحليل الأشكال البيانية:<br>
+                - المنحنى الأحمر (يقل بمرور الزمن) يمثل <strong>المتفاعلات</strong>.<br>
+                - المنحنى الأزرق (يزداد بمرور الزمن) يمثل <strong>النواتج</strong>.<br>
+                في <strong>الشكل (X)</strong>: تركيز النواتج عند الاتزان أكبر من المتفاعلات، إذن قيمة <span dir="ltr">K<sub>c</sub> &gt; 1</span>، والتفاعل الطردي هو السائد.<br>
+                في <strong>الشكل (Y)</strong>: تركيز المتفاعلات عند الاتزان أكبر من النواتج، إذن قيمة <span dir="ltr">K<sub>c</sub> &lt; 1</span>، والتفاعل العكسي هو السائد.</p>`,
+                optionsExplanation: [
+                    "خاطئ، الشكل X نواتجه أكبر فـ Kc ليست 1.",
+                    "خاطئ، الشكل Y متفاعلاته أكبر فـ Kc ليست 1.",
+                    "إجابة صحيحة! في الشكل X النواتج أعلى من المتفاعلات، لذا Kc > 1 والتفاعل يسير بشكل سائد نحو الطردي.",
+                    "خاطئ، في الشكل Y متفاعلاته أكبر، لذا يجب أن تكون Kc < 1 وليس Kc > 1 كما هو مكتوب في هذا الخيار المضلل."
+                ]
+            },
+            // 12
+            {
+                question: `في التفاعل المتزن التالي:<br>
+                <div class="flex justify-center w-full mt-3 mb-2"><span dir="ltr" class="font-mono text-xl text-indigo-700 block bg-indigo-50 px-6 py-2 rounded-xl text-center border border-indigo-200 shadow-sm">Ca(OH)<sub>2(s)</sub> &rightleftharpoons; CaO<sub>(s)</sub> + H<sub>2</sub>O<sub>(v)</sub></span></div>
+                أي التغيرات التالية يؤدي إلى زيادة كتلة أكسيد الكالسيوم ؟`,
+                options: [
+                    "تقليل كتلة أكسيد الكالسيوم إلى النصف",
+                    "سحب 10 مل من بخار الماء",
+                    "زيادة كتلة هيدروكسيد الكالسيوم إلي الضعف",
+                    "اضافة <span dir='ltr'>10 mL</span> من بخار الماء"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>لزيادة كتلة أكسيد الكالسيوم (النواتج)، يجب جعل التفاعل ينشط في الاتجاه الطردي. وفقاً لقاعدة لوشاتيليه، سحب أحد النواتج الغازية (مثل بخار الماء) يؤدي إلى إزاحة الاتزان في الاتجاه الطردي لتعويض النقص، مما يزيد من كمية النواتج الصلبة المتكونة. ملاحظة: تغير كمية المواد الصلبة لا يؤثر على موضع الاتزان.</p>`,
+                optionsExplanation: [
+                    "المواد الصلبة لا تغير من موضع الاتزان.",
+                    "إجابة صحيحة، سحب النواتج الغازية ينشط الاتجاه الطردي فيزيد انتاج CaO.",
+                    "المواد الصلبة (المتفاعلات هنا) لا تغير موضع الاتزان.",
+                    "إضافة بخار الماء سينشط التفاعل العكسي ويقلل من أكسيد الكالسيوم."
+                ]
+            },
+            // 13
+            {
+                question: `تم تخفيف <span dir="ltr">50 mL</span> من محلول هيدروكسيد الأمونيوم (NH₄OH) تركيزه <span dir="ltr">0.2 M</span> بإضافة <span dir="ltr">450 mL</span> من الماء المقطر. ما هي درجة التفكك (&alpha;) للمحلول بعد التخفيف ؟<br><span class="text-sm font-bold">(ثابت تأين محلول الأمونيا K<sub>b</sub> = 1.8 &times; 10<sup>-5</sup>)</span>`,
+                options: [
+                    "<span dir='ltr'>0.03</span>",
+                    "<span dir='ltr'>0.0095</span>",
+                    "<span dir='ltr'>0.2</span>",
+                    "<span dir='ltr'>0.0009</span>"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>1- نحسب التركيز الجديد بعد التخفيف: الحجم الكلي = 50 + 450 = 500 مل. <br>التركيز الجديد (C₂) = (التركيز القديم × الحجم القديم) / الحجم الكلي = (0.2 × 50) / 500 = 0.02 M.<br>2- نحسب درجة التفكك: &alpha; = √(K<sub>b</sub> / C) = √(1.8 × 10⁻⁵ / 0.02) = √(9 × 10⁻⁴) = 0.03.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة ومحسوبة بدقة بعد إيجاد التركيز الجديد.",
+                    "ناتج رياضي خاطئ.",
+                    "التركيز الأصلي وليس درجة التفكك.",
+                    "ناتج رياضي خاطئ."
+                ]
+            },
+            // 14
+            {
+                question: `أنبوبتي اختبار (A) و (B) كل منهما يحتوي علي محلول مشبع كربونات الكالسيوم المتزن:<br>
+                <div class="flex justify-center w-full mt-3 mb-2"><span dir="ltr" class="font-mono text-xl text-indigo-700 block bg-indigo-50 px-6 py-2 rounded-xl text-center border border-indigo-200 shadow-sm">CaCO<sub>3(s)</sub> &rightleftharpoons; Ca<sup>+2</sup><sub>(aq)</sub> + CO<sub>3</sub><sup>2-</sup><sub>(aq)</sub></span></div>
+                - في الأنبوبة (A) ، تم إضافة بضع قطرات من حمض الهيدروكلوريك<br>
+                - في الأنبوبة (B) ، تم إضافة بضع قطرات من محلول كلوريد الكالسيوم<br>
+                أي مما يلى يعد صحيحاً؟`,
+                options: [
+                    "تزداد كمية الراسب تدريجيا في (A)، وتقل تدريجيا في (B)",
+                    "تقل كمية الراسب تدريجيا في (A) ، وتزداد تدريجيا في (B)",
+                    "تزداد كمية الراسب تدريجيا في الأنبوبتين.",
+                    "تقل كمية الراسب تدريجيا في الأنبوبتين."
+                ],
+                correctAnswer: 1,
+                explanation: `<p>في (A): حمض HCl يتفاعل مع أيونات الكربونات ويحولها لغاز CO₂ ومياه، مما يسحب الكربونات من النواتج، فينشط التفاعل الطردي ويذوب الراسب (تقل كمية الراسب).<br>في (B): إضافة كلوريد الكالسيوم توفر أيونات Ca²⁺ (أيون مشترك)، مما يزيد تركيز النواتج، فينشط التفاعل العكسي للتقليل منها، فيترسب المزيد من CaCO₃ (تزداد كمية الراسب).</p>`,
+                optionsExplanation: [
+                    "عكس ما يحدث كيميائياً.",
+                    "إجابة صحيحة، الحمض يذيب الراسب (A)، والأيون المشترك يزيد الترسيب (B).",
+                    "الحمض لا يزيد الترسيب.",
+                    "الأيون المشترك لا يقلل الترسيب."
+                ]
+            },
+            // 15
+            {
+                question: `أضيفت قطرات من محلول X إلى كمية من الماء المقطر فلوحظ انخفاض قيمة pOH للماء.<br>أي مما يلي يعبر عن المحلول X؟`,
+                options: [
+                    "قاعدة pOH لها 8",
+                    "حمض pOH له 5",
+                    "قاعدة pH لها 8",
+                    "حمض pH له 5"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>الماء المقطر له pOH = 7. لكي تنخفض قيمة pOH، يجب إضافة مادة قاعدية (لأن القواعد تزيد من تركيز OH⁻، وبالتالي يقل pOH ليصبح أقل من 7). المادة القاعدية تتميز بأن pH لها أكبر من 7.</p>`,
+                optionsExplanation: [
+                    "قاعدة pOH لها 8 تعني pH = 6 وهذا حمض.",
+                    "حمض pOH له 5 يعني pH = 9 وهذه قاعدة، والتعبير خاطئ.",
+                    "إجابة صحيحة، قاعدة pH لها 8 تعني pOH = 6، وإضافتها للماء سيخفض pOH الخاص به.",
+                    "إضافة حمض سيزيد من قيمة pOH ولن يخفضها."
+                ]
+            },
+            // 16
+            {
+                question: `في التفاعل المتزن الآتي:<br>
+                <div class="flex justify-center w-full mt-3 mb-2"><span dir="ltr" class="font-mono text-xl text-indigo-700 block bg-indigo-50 px-6 py-2 rounded-xl text-center border border-indigo-200 shadow-sm">C<sub>(s)</sub> + CO<sub>2(g)</sub> &rightleftharpoons; 2CO<sub>(g)</sub></span></div>
+                إذا كان الضغط الكلى لهذا النظام عند الإتزان <span dir="ltr">40 atm</span> والضغط الجزئي لغاز أول أكسيد الكربون <span dir="ltr">31.6 atm</span> فإن قيمة K<sub>p</sub> لهذا النظام تساوي:`,
+                options: [
+                    "8.487",
+                    "3.760",
+                    "118.87",
+                    "131.98"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>1- حساب الضغط الجزئي لغاز CO₂:<br>الضغط الكلي للنظام = مجموع الضغوط الجزئية للغازات فقط (الكربون صلب لا يحسب ضغطه).<br><span dir="ltr" class="font-mono bg-gray-100 px-2 rounded">P<sub>total</sub> = P<sub>CO</sub> + P<sub>CO2</sub></span><br><span dir="ltr" class="font-mono">40 = 31.6 + P<sub>CO2</sub></span> &rArr; <span dir="ltr" class="font-mono font-bold bg-yellow-100 px-1 rounded">P<sub>CO2</sub> = 40 &minus; 31.6 = 8.4 atm</span>.<br>2- حساب K<sub>p</sub>:<br><span dir="ltr" class="font-mono bg-blue-50 px-2 rounded block mt-2 text-center">K<sub>p</sub> = (P<sub>CO</sub>)<sup>2</sup> / P<sub>CO2</sub></span><br><span dir="ltr" class="font-mono font-bold text-lg text-green-800 bg-green-100 px-2 rounded block mt-1 text-center">K<sub>p</sub> = (31.6)<sup>2</sup> / 8.4 = 998.56 / 8.4 &asymp; 118.876</span></p>`,
+                optionsExplanation: [
+                    "هذا يمثل الضغط الجزئي لغاز ثاني أكسيد الكربون (8.4 atm) تقريباً.",
+                    "ناتج رياضي خاطئ.",
+                    "إجابة صحيحة! حسبت ضغط ثاني أكسيد الكربون بالطرح من الضغط الكلي، ثم عوضت في قانون Kp بدقة.",
+                    "هذا الناتج يظهر إذا عكست التعويض أو استخدمت أرقاماً أخرى كضغط كلي."
+                ]
+            },
+            // 17
+            {
+                question: `تم اضافة قطرات قليلة من محلول Na₂S إلى نصف خلية الكاثود فى خلية دانيال، أي مما يلي صحيح؟`,
+                options: [
+                    "تزداد القوة الدافعة الكهربية",
+                    "يقل زمن استهلاك الخلية",
+                    "يزداد ترکیز کاتیونات Cu<sup>2+</sup>",
+                    "ينعكس التيار وتقل قيمة emf"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>كاثود خلية دانيال هو قطب النحاس المغمور في كبريتات النحاس (Cu²⁺). عند إضافة Na₂S، تتفاعل أيونات الكبريتيد S²⁻ مع أيونات النحاس Cu²⁺ مكونة راسب أسود من كبريتيد النحاس CuS. هذا يؤدي إلى نقص حاد في تركيز أيونات النحاس، مما يقلل من جهد الكاثود وتتوقف الخلية عن العمل بسرعة (يقل زمن استهلاك الخلية).</p>`,
+                optionsExplanation: [
+                    "نقص تركيز أيونات الكاثود يقلل الجهد ولا يزيده.",
+                    "إجابة صحيحة، استهلاك الأيونات بالترسيب ينهي عمل الخلية سريعاً.",
+                    "تركيز الأيونات يقل بسبب الترسيب ولا يزداد.",
+                    "التيار لا ينعكس، بل تضعف الخلية وتتوقف."
+                ]
+            },
+            // 18
+            {
+                question: `في التفاعل التالي:<br>
+                <div class="flex justify-center w-full mt-3 mb-2"><span dir="ltr" class="font-mono text-base md:text-lg text-indigo-700 block bg-indigo-50 px-4 py-2 rounded-xl text-center border border-indigo-200 shadow-sm">5Cl<sup>-</sup> + 8H<sup>+</sup> + MnO<sub>4</sub><sup>-</sup> &rightarrow; 2.5Cl<sub>2</sub> + 4H<sub>2</sub>O + Mn<sup>2+</sup></span></div>
+                <div dir="ltr" class="text-sm font-mono text-center text-gray-700 mb-2">(E&deg; Cl<sub>2</sub>/2Cl<sup>-</sup> = +1.36 V , E&deg; Mn<sup>2+</sup>/Mn<sup>7+</sup> = -1.52 V)</div>
+                أي مما يلى يعبر عن نوع وقيمة جهد التفاعل على الترتيب؟`,
+                options: [
+                    "تلقائى وقيمة الجهد = 0.16 +",
+                    "غير تلقائى وقيمة الجهد = 2.88 -",
+                    "تلقائي وقيمة الجهد = 0.16 -",
+                    "غير تلقائى وقيمة الجهد = 2.88 +"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>الجهود المعطاة هي جهود اختزال (اكتساب إلكترونات).<br>في التفاعل: الكلوريد يتأكسد لغاز الكلور (أنود)، والمنجنيز يختزل من +7 إلى +2 (كاثود).<br>جهد التفاعل EMF = جهد اختزال الكاثود - جهد اختزال الأنود = 1.52 - 1.36 = +0.16 فولت. وبما أن القيمة موجبة فالتفاعل تلقائي.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، الجهد موجب والتفاعل تلقائي.",
+                    "ناتج رياضي خاطئ وتوصيف خاطئ.",
+                    "التلقائي يجب أن يكون جهده موجباً.",
+                    "التفاعل غير التلقائي يجب أن يكون جهده سالباً."
+                ]
+            },
+            // 19
+            {
+                question: `يوضح الجدول التالي مكونات خليتين جلفانيتين وقيمة الجهد القياسي لكل منهما:<br>
+                <div class="overflow-x-auto my-4 w-full max-w-lg mx-auto">
+                    <table class="w-full text-center border-collapse border-2 border-gray-300">
+                        <thead><tr class="bg-gray-100"><th class="border border-gray-300 p-2">رقم الخلية</th><th class="border border-gray-300 p-2">الأنود</th><th class="border border-gray-300 p-2">الكاثود</th><th class="border border-gray-300 p-2">EMF</th></tr></thead>
+                        <tbody>
+                            <tr><td class="border border-gray-300 p-2">1</td><td class="border border-gray-300 p-2">X</td><td class="border border-gray-300 p-2">Ag</td><td class="border border-gray-300 p-2" dir="ltr">0.80 V</td></tr>
+                            <tr><td class="border border-gray-300 p-2">2</td><td class="border border-gray-300 p-2">Y</td><td class="border border-gray-300 p-2">Ag</td><td class="border border-gray-300 p-2" dir="ltr">1.56 V</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                إذا تم تكوين خلية جلفانية قطباها (X , Y) فإن emf للخلية تساوى:`,
+                options: [
+                    "<span dir='ltr'>+2.36 V</span>",
+                    "<span dir='ltr'>+0.76 V</span>",
+                    "<span dir='ltr'>-0.76 V</span>",
+                    "<span dir='ltr'>-2.36 V</span>"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>جهد أكسدة الفضة = -0.80 فولت.<br>من الخلية الأولى: جهد أكسدة X + جهد اختزال الفضة (+0.80) = 0.80 &rarr; جهد أكسدة X = 0.0 V (وهو الهيدروجين).<br>من الخلية الثانية: جهد أكسدة Y + جهد اختزال الفضة (+0.80) = 1.56 &rarr; جهد أكسدة Y = 0.76 V.<br>لعمل خلية من X و Y: الأنشط هو Y (أنود)، والأقل نشاط هو X (كاثود).<br>EMF = جهد أكسدة Y - جهد أكسدة X = 0.76 - 0.0 = +0.76 فولت.</p>`,
+                optionsExplanation: [
+                    "ناتج عن جمع الجهود وهو غير صحيح.",
+                    "إجابة صحيحة، الفرق بين جهدي الخلية يمثل جهد الخلية الجديدة المكونة منهما.",
+                    "الجهد للخلية الجلفانية يجب أن يكون موجباً.",
+                    "طرح معكوس والخلية يجب أن تعطي جهداً موجباً."
+                ]
+            },
+            // 20
+            {
+                question: `الجدول التالي يعبر عن جهود الاختزال القياسية للفلزات A, B, C :<br>
+                <div class="overflow-x-auto my-4 w-full max-w-sm mx-auto">
+                    <table class="w-full text-center border-collapse border-2 border-gray-300">
+                        <thead><tr class="bg-gray-100"><th class="border border-gray-300 p-2">A</th><th class="border border-gray-300 p-2">B</th><th class="border border-gray-300 p-2">C</th></tr></thead>
+                        <tbody><tr><td class="border border-gray-300 p-2" dir="ltr">-0.44 V</td><td class="border border-gray-300 p-2" dir="ltr">+0.34 V</td><td class="border border-gray-300 p-2" dir="ltr">+0.80 V</td></tr></tbody>
+                    </table>
+                </div>
+                عند تغطية الفلزين (A) و (B) كل على حده بطبقة من الفلز (C) ، أي مما يلى يعبر عن نوع الحماية الصحيحة ؟`,
+                options: [
+                    "حماية أنودية لـ (A) وكاثودية لـ (B)",
+                    "حماية كاثودية لـ (A) وكاثودية لـ (B)",
+                    "حماية أنودية لـ (A) وأنودية لـ (B)",
+                    "حماية كاثودية لـ (A) وأنودية لـ (B)"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>بمقارنة جهود الاختزال (الأقل جهد اختزال هو الأنشط):<br>الترتيب من الأنشط للأقل نشاطاً: A ثم B ثم C.<br>بما أن الفلز C هو الأقل نشاطاً على الإطلاق (أكبر جهد اختزال)، فإن تغطية أي فلز أنشط منه بطبقة منه تُعتبر <strong>حماية كاثودية</strong>. لذلك حماية C لكل من A و B تعتبر حماية كاثودية.</p>`,
+                optionsExplanation: [
+                    "C ليس أنشط من A ليكون حماية أنودية.",
+                    "إجابة صحيحة، C أقل نشاطاً من كليهما لذا يوفر حماية كاثودية لهما.",
+                    "C ليس أنشط منهما ليوفر حماية أنودية.",
+                    "C ليس أنشط من B."
+                ]
+            },
+
+            // 21
+            {
+                question: `عند تحليل خام البوكسيت كهربياً ، أي العبارات الآتية تعبر عن نتيجة التفاعل ؟`,
+                options: [
+                    "يتصاعد غاز الهيدروجين عند الكاثود وغاز الأكسجين عند الأنود",
+                    "يترسب فلز الألومنيوم عند الكاثود ويتكون غاز الأكسجين عند الأنود",
+                    "يترسب فلز الألومنيوم عند الكاثود ويتكون غاز الهيدروجين عند الأنود",
+                    "يتصاعد غاز الأكسجين عند الكاثود ويتصاعد غاز الهيدروجين عند الأنود"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>البوكسيت هو أكسيد الألومنيوم (Al₂O₃) المذاب في الكريوليت. عند التحليل الكهربي للمصهور، تتجه أيونات الألومنيوم الموجبة (Al³⁺) نحو الكاثود (القطب السالب) وتُختزل لتكوين فلز الألومنيوم السائل. وتتجه أيونات الأكسجين السالبة (O²⁻) نحو الأنود (القطب الموجب) وتُؤكسد لتكوين غاز الأكسجين.</p>`,
+                optionsExplanation: [
+                    "لا يتصاعد هيدروجين لأننا نستخدم مصهور وليس محلول مائي.",
+                    "إجابة صحيحة، الألومنيوم عند الكاثود والأكسجين عند الأنود.",
+                    "لا يوجد هيدروجين في خام البوكسيت ليتصاعد.",
+                    "عكس للأقطاب والغازات."
+                ]
+            },
+            // 22
+            {
+                question: `ثلاث فلزات (A, B, C) ترتب حسب قوتها كعوامل مختزلة كالآتي: A > B > C<br>عند تنقية الفلز B الذى يحتوى على شوائب من (A, C) باستخدام خلية تحليلية تحتوى على محلول الكتروليتي من أيونات (B<sup>2+</sup>) في الظروف المناسبة، أي مما يلي يعد صحيحاً ؟`,
+                options: [
+                    "يتأكسد الفلز C أثناء عملية التنقية",
+                    "يُختزل الفلز C أثناء عملية التنقية",
+                    "يتأكسد الفلز A عند الأنود و يترسب C أسفل الأنود",
+                    "يختزل الفلز A عند الأنود ويترسب C عند الكاثود"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>ترتيب النشاط (جهود الأكسدة): A هو الأنشط ثم B ثم C.<br>عند وضع السبيكة كأنود: الفلز الأنشط A والفلز الأساسي B يتأكسدان ويدخلان المحلول كأيونات. أما الفلز C الأقل نشاطاً من B فلا يتأكسد بل يتساقط كشوائب أسفل الأنود. وفي الكاثود تترسب أيونات B²⁺ فقط.</p>`,
+                optionsExplanation: [
+                    "الشوائب الأقل نشاطاً (C) لا تتأكسد بل تتساقط.",
+                    "C لا يختزل لأنه لم يتأكسد أصلاً ليصل للمحلول.",
+                    "إجابة صحيحة، A الأنشط يتأكسد ويذوب، و C الأضعف يترسب دون تفاعل.",
+                    "الأكسدة تحدث عند الأنود وليس الاختزال."
+                ]
+            },
+            // 23
+            {
+                question: `ثلاثة هيدروكربونات:<br>(A) غازي وهو أحد مكونات غاز البوتاجاز ويكون بنسبة أقل في الدول الحارة<br>(B) يحتوى على نفس عدد ذرات الكربون في المركب (A) وتقل صيغته الجزيئية بذرتين هيدروجين عن المركب (A)<br>(C) غير مشبع تقل صيغته الجزيئية بذرتين هيدروجين عن المركب (B)<br>أي مما يلى يعبر عن نواتج الهدرجة التامة في وجود عامل حفاز لكل من المركبات السابقة ؟`,
+                options: [
+                    "A: بروبان ، B: بروبان ، C: بروبان",
+                    "A: بيوتان ، B: بروبان ، C: بروبين",
+                    "A: بيوتان ، B: سيكلوبروبان ، C: بروباين",
+                    "A: بروبان ، B: بروبين ، C: بروباين"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>المركب (A) هو البروبان (C₃H₈) لأنه غاز يتطاير بسرعة ويستخدم بنسبة أقل في المناطق الحارة مقارنة بالبيوتان.<br>المركب (B) لديه 3 كربون ويقل بذرتي H، فهو البروبين (C₃H₆).<br>المركب (C) يقل عن B بذرتي H فهو البروباين (C₃H₄).<br>نواتج الهدرجة التامة: الألكان (A) لا يُهدرج فيبقى بروبان. الألكين (B) والألكاين (C) عند هدرجتهما تامة يعطيان الألكان المقابل وهو البروبان.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة! الهدرجة التامة لجميع مركبات السلسلة المتجانسة تعطي نفس الألكان المشبع.",
+                    "المركب A ليس البيوتان.",
+                    "الهدرجة لا تعطي مركبات غير مشبعة أو حلقية من مفتوحة السلسلة.",
+                    "الهدرجة التامة تعطي مركبات مشبعة فقط (ألكانات)."
+                ]
+            },
+            // 24
+            {
+                question: `ثلاث مركبات عضوية (A) ,(B) ,(C) كل منهما يحتوي علي ذرتين كربون:<br>المركب (A): هيدروكربون مشبع يمكن إسالته بالضغط والتبريد<br>المركب (B): يتميز بوجود رابطة هيدروجينية واحدة بين كل جزيئين<br>المركب (C): يتميز بوجود رابطتين هيدروجينيتين بين كل جزيئين<br>أي مما يلى يمثل الترتيب الصحيح للعمليات الكيميائية اللازمة للحصول علي هيدروكربون مشبع درجة غليانه أقل من درجة غليان المركب (A)؟`,
+                options: [
+                    "هلجنة (A) - تحلل مائي في وسط قلوي - تعادل - تقطير جاف",
+                    "أكسدة تامة للمركب (B) - إضافة هيدروكسيد الصوديوم - تقطير جاف",
+                    "اختزال المركب (C) - نزع ماء - هدرجة حفزية",
+                    "تفاعل (B) و (C) - تحلل مائي في وسط حمضي - أكسدة الناتج"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>المركب (A) إيثان، (B) إيثانول (رابطة هيدروجينية واحدة)، (C) حمض الإيثانويك (رابطتين هيدروجينيتين).<br>المطلوب هيدروكربون غليانه أقل من الإيثان (A)، وهو الميثان CH₄.<br>للحصول على الميثان من (B) الإيثانول: نقوم باختزال تامة للإيثانول لنحصل على حمض الإيثانويك (الأسيتيك)، ثم تعادل (بإضافة NaOH) لنحصل على أسيتات الصوديوم، ثم تقطير جاف لأسيتات الصوديوم للحصول على غاز الميثان.</p>`,
+                optionsExplanation: [
+                    "هذه السلسلة من الإيثان ستعطي في النهاية ميثان ولكن بخطوات غير مباشرة تماماً.",
+                    "إجابة دقيقة وصحيحة! أكسدة الكحول تعطي حمض، ثم تعادله يعطي الملح، ثم تقطير جاف يعطي الألكان الأقل بذرة كربون (الميثان).",
+                    "اختزال الحمض يعطي كحول، ونزع الماء يعطي إيثين، والهدرجة تعطي إيثان، وهو نفس المركب A وليس أقل منه.",
+                    "هذه تفاعلات أسترة ولا تؤدي للحصول على ألكان."
+                ]
+            },
+            // 25
+            {
+                question: `حمض كربوكسيلي أحادي القاعدية (يحتوى على عدد مجموعات كربوكسيل يساوي عدد ذرات الكربون) عند إضافته إلى كحول درجة تجمده -110.5&deg;C<br>أي مما يلى يعبر عن عدد أيزوميرات المركب الناتج التي بها نفس المجموعة الفعالة؟`,
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>الحمض الذي عدد ذرات كربونه يساوي عدد مجموعات الكربوكسيل (أحادي) هو حمض الفورميك HCOOH (ذرة كربون واحدة ومجموعة واحدة). الكحول الذي تجمده -110.5 هو الإيثانول C₂H₅OH.<br>التفاعل بينهما ينتج إستر: فورمات الإيثيل HCOOC₂H₅ (صيغته C₃H₆O₂).<br>أيزوميرات الإسترات لهذه الصيغة: 1- أسيتات الميثيل CH₃COOCH₃. 2- بروبيونات ... (لا يوجد، لأن 3 ذرات كربون فقط). إذن الأيزوميرات من نفس العائلة (إسترات) هي 2 (المركب نفسه والأيزومر الآخر). ولكن السؤال عن أيزوميرات "المركب الناتج"، فورمات الإيثيل له أيزومر إستر واحد فقط وهو أسيتات الميثيل. إذا اعتبرنا جميع الإسترات فهم 2.</p>`,
+                optionsExplanation: [
+                    "يوجد أيزوميرات.",
+                    "فورمات الإيثيل وأسيتات الميثيل يمثلان إسترات.",
+                    "إجابة صحيحة، يوجد أيزومران إستريان للصيغة C3H6O2 وهما فورمات الإيثيل وأسيتات الميثيل.",
+                    "الصيغة صغيرة لا تسمح بتكوين 3 أيزومرات إسترية."
+                ]
+            },
+            // 26
+            {
+                question: `من المخطط التالي:<br>
+                <div class="w-full flex justify-center py-5 overflow-x-auto" dir="ltr" style="scrollbar-width: thin;">
+                    <div class="flex items-center min-w-max px-2">
+                        <!-- Box A -->
+                        <div class="border-[2px] border-black px-5 py-3 bg-white flex items-center justify-center shadow-sm flex-shrink-0 min-w-[70px] md:min-w-[90px]">
+                            <span class="text-lg md:text-xl font-bold text-black">(A)</span>
+                        </div>
+                        
+                        <!-- Arrow 1 (NaOH) -->
+                        <div class="flex flex-col items-center mx-2 md:mx-4 flex-shrink-0">
+                            <span class="text-xs md:text-sm font-bold text-[#1e40af] mb-1 whitespace-nowrap">(NaOH)</span>
+                            <div class="flex items-center w-14 md:w-20">
+                                <div class="h-[2px] bg-[#1e40af] w-full"></div>
+                                <div class="w-2 h-2 border-t-[2px] border-r-[2px] border-[#1e40af] transform rotate-45 -translate-x-[2px] z-10"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Box B -->
+                        <div class="border-[2px] border-black px-5 py-3 bg-white flex items-center justify-center shadow-sm flex-shrink-0 min-w-[70px] md:min-w-[90px]">
+                            <span class="text-lg md:text-xl font-bold text-black">(B)</span>
+                        </div>
+                        
+                        <!-- Arrow 2 (C) -->
+                        <div class="flex flex-col items-center mx-2 md:mx-4 flex-shrink-0">
+                            <span class="text-xs md:text-sm font-bold text-[#1e40af] mb-1 whitespace-nowrap">(C)</span>
+                            <div class="flex items-center w-14 md:w-20">
+                                <div class="h-[2px] bg-[#1e40af] w-full"></div>
+                                <div class="w-2 h-2 border-t-[2px] border-r-[2px] border-[#1e40af] transform rotate-45 -translate-x-[2px] z-10"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Box D -->
+                        <div class="border-[2px] border-black px-4 py-2 bg-white flex flex-col items-center justify-center shadow-sm flex-shrink-0 min-w-[90px] md:min-w-[110px]">
+                            <span class="text-lg md:text-xl font-bold text-black mb-1">(D)</span>
+                            <span class="text-sm md:text-base font-bold font-mono text-black">C<sub>n</sub>H<sub>2n+2</sub>O</span>
+                        </div>
+                        
+                        <!-- Arrow 3 (أكسدة تامة) -->
+                        <div class="flex flex-col items-center mx-2 md:mx-4 flex-shrink-0">
+                            <span class="text-xs md:text-sm font-bold text-[#1e40af] mb-1 whitespace-nowrap" dir="rtl">أكسدة تامة</span>
+                            <div class="flex items-center w-16 md:w-24">
+                                <div class="h-[2px] bg-[#1e40af] w-full"></div>
+                                <div class="w-2 h-2 border-t-[2px] border-r-[2px] border-[#1e40af] transform rotate-45 -translate-x-[2px] z-10"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Box E -->
+                        <div class="border-[2px] border-black px-4 py-2 bg-white flex flex-col items-center justify-center shadow-sm flex-shrink-0 min-w-[90px] md:min-w-[110px]">
+                            <span class="text-lg md:text-xl font-bold text-black mb-1">(E)</span>
+                            <span class="text-sm md:text-base font-bold font-mono text-black">C<sub>n</sub>H<sub>2n</sub>O<sub>2</sub></span>
+                        </div>
+                    </div>
+                </div>
+                إذا علمت أن الحمض العضوي (A) يسبب تقلصا في العضلات عند زيادته في الجسم.<br>أي مما يلى يعبر عن التسمية الصحيحة لكل من (D) و (E) واسم العملية (C)؟`,
+                options: [
+                    "D : بروبانول ، E : حمض البروبانويك ، C : تقطير جاف",
+                    "D : إيثانول ، E : حمض الإيثانويك ، C : نزع ماء",
+                    "D : إيثانول ، E : حمض الإيثانويك ، C : تقطير جاف",
+                    "D : بروبانول ، E : حمض البروبانويك ، C : نزع ماء"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>حمض اللاكتيك هو الذي يسبب تقلص العضلات. المخطط يتحدث عن الحصول على أحماض أليفاتية. الإيثانول (D) عند أكسدته التامة يعطي حمض الإيثانويك (الأسيتيك) (E). ويمكن الحصول على الإيثانول من الإيثين (أو السكروز) بعمليات متنوعة. من الخيارات المتاحة والمألوفة في المنهج: الإيثانول يؤكسد لحمض الإيثانويك.</p>`,
+                optionsExplanation: [
+                    "بروبانول يعطي بروبانويك ولكن العمليات المرتبطة بالتقلص العضلي والتحلل تشير غالباً لمركبات أصغر.",
+                    "إجابة نموذجية، الإيثانول يتأكسد لحمض الإيثانويك (الأسيتيك).",
+                    "الإيثانول لا ينتج من التقطير الجاف.",
+                    "نزع الماء من الكحول يعطي ألكين وليس كحول."
+                ]
+            },
+            // 27
+            {
+                question: `أي مما يلى يعبر عن الترتيب الصحيح للعمليات الكيميائية اللازمة للحصول علي مركب عضوي يستخدم كمادة مانعة لتجمد الماء من سكر القصب ؟`,
+                options: [
+                    "تحلل مائي - تخمر كحولي - نزع ماء عند 140 - إضافة فوق أكسيد الهيدروجين",
+                    "تخمر كحولي - تحلل مائي - نزع ماء عند 180 - تفاعل باير",
+                    "تحلل مائي - تخمر كحولي - نزع ماء عند 180 - إضافة فوق أكسيد الهيدروجين",
+                    "تحلل مائي - تخمر كحولي - نزع ماء عند 80 - إضافة فوق أكسيد الهيدروجين"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>المادة المانعة لتجمد الماء هي الإيثيلين جليكول.<br>للحصول عليه من سكر القصب: 1- تحلل مائي للسكر للحصول على الجلوكوز والفركتوز. 2- تخمر كحولي للجلوكوز للحصول على الإيثانول. 3- نزع ماء من الإيثانول عند 180&deg;C بواسطة حمض الكبريتيك المركز للحصول على الإيثين. 4- أكسدة الإيثين (بإضافة فوق أكسيد الهيدروجين أو تفاعل باير) للحصول على الإيثيلين جليكول.</p>`,
+                optionsExplanation: [
+                    "نزع الماء عند 140 يعطي إيثر وليس ألكين.",
+                    "الترتيب مقلوب، التحلل المائي يسبق التخمر.",
+                    "إجابة ممتازة ومطابقة لخطوات التحضير الكيميائي الدقيقة.",
+                    "نزع الماء عند 80 يعطي كبريتات الإيثيل الهيدروجينية وليس ألكين."
+                ]
+            },
+            // 28
+            {
+                question: `(A), (B), (C) ثلاث أحماض عضوية لا تحتوي على مجموعة كربوكسيل:<br>(A) حمض ضعيف صلب له رائحة مميزة في درجة حرارة الغرفة<br>(B) يمكن تحضيره بتفاعل البنزين مع أحد الأحماض المعدنية بالاستبدال<br>(C) يستخدم كمادة مطهرة في علاج الحروق<br>أي مما يلى يعبر عن الأحماض السابقة؟`,
+                options: [
+                    "يمكن تحضير الحمض (A) من الحمض (B) بالأكسدة التامة في وجود مادة نازعة للماء",
+                    "يمكن تحضير الحمض (B) من الحمض (A) بإضافة حمض النيتريك المركز في وجود حمض كبريتيك",
+                    "يمكن تحضير الحمض (C) من الحمض (B) بإضافة حمض النيتريك وحمض الكبريتيك المركزين",
+                    "يمكن تحضير الحمض (B) من الحمض (A) بإضافة الخارصين والتسخين ثم حمض كبريتيك مركز"
+                ],
+                correctAnswer: 3,
+                explanation: `<p>الأحماض العضوية التي لا تحتوي على كربوكسيل: A هو الفينول (حمض الكربوليك). B هو حمض بنزين سلفونيك. C هو حمض البكريك (ثلاثي نيترو فينول).<br>لتحضير B (بنزين سلفونيك) من A (الفينول): نقوم باختزال الفينول بإمرار بخاره على مسحوق الخارصين الساخن لنحصل على البنزين العطري، ثم نفعل البنزين مع حمض الكبريتيك المركز (سلفنة) لنحصل على حمض بنزين سلفونيك.</p>`,
+                optionsExplanation: [
+                    "تفاعل خاطئ لتحضير الفينول.",
+                    "هذا التفاعل (نيترة الفينول) سيعطي حمض البكريك (C) وليس بنزين سلفونيك.",
+                    "نيترة بنزين سلفونيك لا تعطي حمض البكريك، لأن البكريك يُحضر من الفينول مباشرة.",
+                    "إجابة دقيقة! اختزال الفينول ليعطي بنزين، ثم سلفنة البنزين تعطي حمض بنزين سلفونيك."
+                ]
+            },
+            // 29
+            {
+                question: `أي المركبات التالية يحترق مول منه في وفرة من الأكسجين ليعطي 4 mol من بخار الماء و 3 mol من ثاني أكسيد الكربون؟`,
+                options: [
+                    "بروبان",
+                    "سيكلوبروبان",
+                    "بروبانول",
+                    "بروباين"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>احتراق مول يعطي 3 مول CO₂ يعني المركب يحتوي على 3 ذرات كربون. ويعطي 4 مول H₂O يعني المركب يحتوي على 8 ذرات هيدروجين (لأن كل جزيء ماء به ذرتي هيدروجين).<br>المركب الذي صيغته C₃H₈ هو البروبان (ألكان).</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، البروبان صيغته C3H8.",
+                    "سيكلوبروبان صيغته C3H6 فيعطي 3 مول ماء.",
+                    "بروبانول صيغته C3H8O وهو كحول، واحتراقه يستهلك أكسجين أقل، لكن السؤال يطلب هيدروكربون قياسي للنواتج المعطاة.",
+                    "بروباين صيغته C3H4 فيعطي 2 مول ماء."
+                ]
+            },
+            // 30
+            {
+                question: `أي مما يلي يعبر عن الدور الصحيح لهيدروكسيد الصوديوم في تحضير البارافينات، ودور حمض الكبريتيك المركز في تحضير الأوليفينات علي الترتيب؟`,
+                options: [
+                    "نزع الماء من الكحولات في تحضير الأوليفينات ومادة صهارة في تحضير البارافينات",
+                    "يقوم بنزع مجموعة الكربوكسيلات في تحضير الأوليفينات ونزع الماء في تحضير البارافينات",
+                    "يقوم بنزع مجموعة الكربوكسيلات في تحضير البارافينات ونزع الماء في تحضير الأوليفينات",
+                    "يقوم بامتصاص بخار الماء في تحضير البارافينات ومعادلة أبخرة الحمض في تحضير الأوليفينات"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>في تحضير البارافينات (الألكانات كالميثان)، يستخدم خليط الجير الصودي (NaOH + CaO) للتقطير الجاف، حيث يقوم NaOH بنزع مجموعة الكربوكسيلات (أو التفاعل لانتزاع الكربونات).<br>في تحضير الأوليفينات (الألكينات كالإيثين)، يستخدم حمض الكبريتيك المركز كعامل نازع للماء من الكحولات.</p>`,
+                optionsExplanation: [
+                    "الأدوار معكوسة في الخيار.",
+                    "هيدروكسيد الصوديوم لا يستخدم في الأوليفينات لنزع الكربوكسيلات.",
+                    "إجابة صحيحة! NaOH ينزع الكربوكسيلات (تقطير جاف)، وح حمض الكبريتيك ينزع الماء (تحضير ألكين).",
+                    "وظائف غير صحيحة كيميائياً في سياق التحضير."
+                ]
+            },
+
+            // 31
+            {
+                question: `ادرس المركب التالي:<br>
+                <div class="flex justify-center my-6" dir="ltr">
+                    <svg viewBox="0 0 360 180" class="w-full max-w-md bg-white rounded-xl shadow-sm border border-gray-200 p-4" preserveAspectRatio="xMidYMid meet">
+                        <!-- Hexagon -->
+                        <polygon points="100,55 130,72.3 130,107.7 100,125 70,107.7 70,72.3" fill="none" stroke="black" stroke-width="2"/>
+                        <!-- Inner Circle -->
+                        <circle cx="100" cy="90" r="18" fill="none" stroke="black" stroke-width="2"/>
+                        <!-- The tiny stray dot from the print -->
+                        <circle cx="100" cy="74" r="1.5" fill="black" />
+                        
+                        <!-- Top COOH Group -->
+                        <line x1="100" y1="55" x2="100" y2="30" stroke="black" stroke-width="2"/>
+                        <text x="92" y="25" font-family="'Times New Roman', Times, serif" font-size="22" fill="black" text-anchor="start">COOH</text>
+                        
+                        <!-- Bottom-Left HO Group -->
+                        <line x1="70" y1="107.7" x2="48" y2="120" stroke="black" stroke-width="2"/>
+                        <text x="44" y="128" font-family="'Times New Roman', Times, serif" font-size="22" fill="black" text-anchor="end">HO</text>
+
+                        <!-- Bottom-Right Ester Group -->
+                        <line x1="130" y1="107.7" x2="152" y2="120" stroke="black" stroke-width="2"/>
+                        <text x="156" y="128" font-family="'Times New Roman', Times, serif" font-size="22" fill="black">O</text>
+                        <line x1="178" y1="120" x2="190" y2="120" stroke="black" stroke-width="2"/>
+                        <text x="195" y="128" font-family="'Times New Roman', Times, serif" font-size="22" fill="black">C</text>
+                        <!-- Double bond -->
+                        <line x1="200" y1="106" x2="200" y2="82" stroke="black" stroke-width="2"/>
+                        <line x1="207" y1="106" x2="207" y2="82" stroke="black" stroke-width="2"/>
+                        <text x="203" y="76" font-family="'Times New Roman', Times, serif" font-size="22" fill="black" text-anchor="middle">O</text>
+                        
+                        <line x1="215" y1="120" x2="227" y2="120" stroke="black" stroke-width="2"/>
+                        <text x="232" y="128" font-family="'Times New Roman', Times, serif" font-size="22" fill="black">CH<tspan dy="5" font-size="16">2</tspan><tspan dy="-5"> NH</tspan><tspan dy="5" font-size="16">2</tspan></text>
+                    </svg>
+                </div>
+                <span class="text-red-700 font-bold block text-center mt-2 mb-4">أي مما يلى يعبر عن النتائج الصحيحة عند إجراء التجارب الآتية علي هذا المركب ؟</span>
+                
+                <!-- رأس الجدول (يظهر في الشاشات الكبيرة) -->
+                <div class="hidden md:grid grid-cols-3 gap-2 text-center font-bold bg-blue-100 p-3 rounded-t-xl border border-blue-200 text-[13px] md:text-[15px]">
+                    <div>1- إضافة بيكربونات الصوديوم</div>
+                    <div class="border-r border-blue-300 pr-2">2- اختزال بالهيدروجين ثم إضافة محلول كلوريد الحديد III</div>
+                    <div class="border-r border-blue-300 pr-2">3- تحلل مائي في وسط حمضي</div>
+                </div>`,
+                options: [
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>1- إضافة بيكربونات الصوديوم:</span>يحدث فوران و يتصاعد غاز يعكر ماء الجير الرائق</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>2- اختزال ثم إضافة FeCl<sub>3</sub>:</span>يتلون المحلول باللون البنفسجي</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>3- تحلل مائي في وسط حمضي:</span>يتكون حمض البنزويك</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>1- إضافة بيكربونات الصوديوم:</span>لا يحدث فوران</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>2- اختزال ثم إضافة FeCl<sub>3</sub>:</span>يتلون المحلول باللون البنفسجي</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>3- تحلل مائي في وسط حمضي:</span>يتكون حمض الاستيك</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>1- إضافة بيكربونات الصوديوم:</span>لا يحدث فوران</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>2- اختزال ثم إضافة FeCl<sub>3</sub>:</span>لا يتغير اللون</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>3- تحلل مائي في وسط حمضي:</span>يتكون حمض الجلايسين</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>1- إضافة بيكربونات الصوديوم:</span>يحدث فوران و يتصاعد غاز يعكر ماء الجير الرائق</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>2- اختزال ثم إضافة FeCl<sub>3</sub>:</span>يتلون المحلول باللون البنفسجي</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>3- تحلل مائي في وسط حمضي:</span>يتكون حمض الجلايسين</div></div>"
+                ],
+                correctAnswer: 3,
+                explanation: `<p>1- <strong>إضافة بيكربونات الصوديوم:</strong> لوجود مجموعة الكربوكسيل (-COOH) الحامضية، يحدث فوران ويتصاعد غاز CO₂ الذي يعكر ماء الجير.<br>2- <strong>اختزال ثم FeCl₃:</strong> مجموعة الفينول (-OH) لا تتأثر بالاختزال في هذه الظروف، وعند إضافة FeCl₃ يتلون المحلول باللون البنفسجي المميز للفينولات.<br>3- <strong>تحلل مائي في وسط حمضي:</strong> يكسر الرابطة الإسترية (-O-CO-CH₂-NH₂)، مما يعطي الفينول المستبدل بالإضافة إلى الجزء الحمضي للإستر وهو (HOOC-CH₂-NH₂) والذي يُعرف كيميائياً باسم حمض الجلايسين.</p>`,
+                optionsExplanation: [
+                    "التحلل المائي للإستر لا يعطي حمض البنزويك، بل يعطي حمض الجلايسين (لأن الشق الحمضي في هذا الإستر هو الجلايسين).",
+                    "عدم حدوث فوران خطأ (لتواجد COOH)، والتحلل يعطي جلايسين وليس أسيتيك.",
+                    "عدم حدوث فوران خطأ، واللون يجب أن يتغير للبنفسجي بسبب تواجد مجموعة الـ OH الفينولية التي لم تتأثر بالاختزال.",
+                    "إجابة دقيقة وصحيحة 100%! يجمع بين فوران الكربوكسيل، ولون الفينول البنفسجي، وناتج التحلل المائي للإستر وهو حمض الجلايسين."
+                ]
+            },
+            // 32
+            {
+                question: `أي مما يلى يعبر عن الترتيب الصحيح للعمليات الكيميائية اللازمة لتحضير مادة تستخدم في أحبار الطباعة من المركب الناتج من الهيدرة الحفزية لأبسط ألكاين؟`,
+                options: [
+                    "اختزال - أسترة - تحلل مائي في وسط حمضي - تكسير حراري",
+                    "أكسدة - تقطير جاف - تعادل - امرار بخار الماء",
+                    "اختزال - نزع ماء - هدرجة - هلجنة",
+                    "أكسدة - تعادل - تقطير جاف - تكسير حراري"
+                ],
+                correctAnswer: 3,
+                explanation: `<p>أبسط ألكاين هو الإيثاين. هيدرته الحفزية تعطي الأسيتالديهيد. المادة المستخدمة في أحبار الطباعة هي الكربون المجزأ (أسود الكربون) الذي يحصل عليه من التكسير الحراري للميثان بمعزل عن الهواء عند 1000 درجة.<br>للحصول على الميثان من الأسيتالديهيد: 1- أكسدة (يعطي حمض أسيتيك). 2- تعادل (يعطي أسيتات الصوديوم). 3- تقطير جاف (يعطي الميثان). 4- انحلال/تكسير حراري عند 1000 يعطي أسود الكربون.</p>`,
+                optionsExplanation: [
+                    "الخطوات لا تؤدي لأسود الكربون.",
+                    "ترتيب غير منطقي بعد التقطير الجاف.",
+                    "الخطوات تؤدي لتكوين هالو ألكان وليس كربون.",
+                    "إجابة دقيقة! أكسدة ثم تعادل ثم تقطير جاف يعطي الميثان، وتسخينه بمعزل يعطي أسود الكربون للأحبار."
+                ]
+            },
+            // 33
+            {
+                question: `أي المحاليل التالية يمكن إضافتها إلى محلول يحتوي على الكاتيونات (Al<sup>3+</sup>, Fe<sup>2+</sup>, Ca<sup>2+</sup>) لترسيب كاتيون واحد فقط من هذه الكاتيونات؟`,
+                options: [
+                    "كربونات صوديوم",
+                    "وفرة من هيدروكسيد صوديوم",
+                    "وفرة من هيدروكسيد أمونيوم",
+                    "كلوريد بوتاسيوم"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>إضافة وفرة من هيدروكسيد الصوديوم ستؤدي إلى:<br>1- ترسيب الحديد الثنائي (هيدروكسيد حديد ثنائي لا يذوب في الوفرة).<br>2- ترسيب الألومنيوم كـ Al(OH)₃ ثم ذوبانه في الوفرة لتكوين ميتا ألومينات الصوديوم الذائبة.<br>3- الكالسيوم لا يترسب بهيدروكسيد الصوديوم في التراكيز العادية.<br>إذن سيترسب كاتيون واحد فقط في النهاية وهو الحديد الثنائي.</p>`,
+                optionsExplanation: [
+                    "الكربونات سترسب الكاتيونات الثلاثة معاً ككربونات لا تذوب.",
+                    "إجابة ذكية! الوفرة تذيب راسب الألومنيوم، ولا ترسب الكالسيوم، فيتبقى راسب الحديد فقط.",
+                    "هيدروكسيد الأمونيوم سيرسب كل من الحديد والألومنيوم ولن يذيب راسب الألومنيوم في الوفرة.",
+                    "الكلوريدات للثلاثة كاتيونات تذوب في الماء ولا تترسب."
+                ]
+            },
+            // 34
+            {
+                question: `عنصران متتاليان (X, Y) من السلسلة الانتقالية الأولى، العنصر X له أعلى حالة تأكسد في السلسلة. أي مما يلي يُعد صحيحاً ؟`,
+                options: [
+                    "العنصر (Y) ديا مغناطيسي وتحتوي ذرته على 6 إلكترونات مفردة",
+                    "العنصر (X) ديا مغناطيسي وتحتوي ذرته على 6 إلكترونات مفردة",
+                    "الأيون Y<sup>2+</sup> بارامغناطيسي ويحتوي على 4 إلكترونات مفردة",
+                    "الأيون X<sup>3+</sup> بارامغناطيسي ويحتوي علي 5 إلكترونات مفردة"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>العنصر X له أعلى حالة تأكسد (+7) فهو المنجنيز Mn (4s² 3d⁵). العنصر التالي له Y هو الحديد Fe (4s² 3d⁶).<br>لنتحقق من الخيارات: الأيون Y²⁺ (وهو Fe²⁺) يحتوي على 4 إلكترونات مفردة في الـ 3d، وهو بارامغناطيسي قوي.</p>`,
+                optionsExplanation: [
+                    "الحديد ليس ديامغناطيسي ولا يحتوي على 6 مفردة.",
+                    "المنجنيز ليس ديامغناطيسي.",
+                    "إجابة صحيحة، أيون الحديد الثنائي يمتلك 4 إلكترونات مفردة في المستوى 3d وهو بارامغناطيسي.",
+                    "أيون المنجنيز الثلاثي يمتلك 4 إلكترونات مفردة وليس 5."
+                ]
+            },
+            // 35
+            {
+                question: `عند إضافة 200 mL من حمض الكبريتيك 0.2 M إلى 300 mL من هيدروكسيد الكالسيوم 0.2 M وفقًا للمعادلة التالية:<br>
+                <div class="flex justify-center w-full mt-3 mb-2"><span dir="ltr" class="font-mono text-lg block bg-indigo-50 px-4 py-2 rounded-xl text-center border border-indigo-200 shadow-sm">H<sub>2</sub>SO<sub>4</sub> + Ca(OH)<sub>2</sub> &rightarrow; CaSO<sub>4</sub> + 2H<sub>2</sub>O</span></div>
+                أي مما يلي يعبر عن تركيز المادة المتبقية دون تفاعل ؟`,
+                options: [
+                    "<span dir='ltr'>0.080 M</span>",
+                    "<span dir='ltr'>0.040 M</span>",
+                    "<span dir='ltr'>0.100 M</span>",
+                    "<span dir='ltr'>0.020 M</span>"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>1- نحسب عدد المولات: مولات الحمض = 0.2 × 0.200 = 0.04 مول. مولات القاعدة = 0.2 × 0.300 = 0.06 مول.<br>2- نسبة التفاعل 1:1، لذا سيتفاعل 0.04 مول من الحمض مع 0.04 مول من القاعدة. المادة الزائدة هي القاعدة بمقدار = 0.06 - 0.04 = 0.02 مول.<br>3- التركيز المتبقي = عدد المولات الزائدة / الحجم الكلي = 0.02 / (0.200 + 0.300) = 0.02 / 0.500 = 0.04 M.</p>`,
+                optionsExplanation: [
+                    "ناتج قسمة خاطئ.",
+                    "إجابة صحيحة! حسبت المولات الزائدة وقسمتها على الحجم الكلي للخليط بامتياز.",
+                    "رقم لا يمت للحسابات بصلة.",
+                    "هذا هو عدد المولات الزائدة وليس التركيز."
+                ]
+            },
+            // 36
+            {
+                question: `أي التفاعلات التالية تتساوي فيه قيمة K<sub>c</sub> مع تركيز النواتج ؟`,
+                options: [
+                    "<span dir='ltr'>C<sub>(s)</sub> + O<sub>2(g)</sub> &rightleftharpoons; CO<sub>2(g)</sub></span>",
+                    "<span dir='ltr'>CaCO<sub>3(s)</sub> &rightleftharpoons; CaO<sub>(s)</sub> + CO<sub>2(g)</sub></span>",
+                    "<span dir='ltr'>2H<sub>2(g)</sub> + O<sub>2(g)</sub> &rightleftharpoons; 2H<sub>2</sub>O<sub>(g)</sub></span>",
+                    "<span dir='ltr'>N<sub>2(g)</sub> + 3H<sub>2(g)</sub> &rightleftharpoons; 2NH<sub>3(g)</sub></span>"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>لكي تتساوى قيمة K<sub>c</sub> مع تركيز النواتج مباشرة دون أي مقامات، يجب أن يكون المقام في قانون K<sub>c</sub> يساوي 1. هذا يحدث عندما تكون جميع المتفاعلات في الحالة الصلبة (s) أو السائلة النقية (l). في الخيار الثاني، كربونات الكالسيوم صلبة، وأكسيد الكالسيوم صلب، فيكون القانون K<sub>c</sub> = [CO₂] وهو تركيز الناتج الغازي الوحيد.</p>`,
+                optionsExplanation: [
+                    "يوجد غاز في المتفاعلات سيُكتب في المقام.",
+                    "إجابة ممتازة! المتفاعلات صلبة لا تُكتب، فتصبح قيمة Kc مساوية لتركيز غاز CO2 الناتج.",
+                    "كل المتفاعلات غازات ستُكتب في المقام.",
+                    "كل المتفاعلات غازات ستُكتب في المقام."
+                ]
+            },
+            // 37
+            {
+                question: `تم تبريد محلول مشبع من كبريتيد الخارصين (ZnS) حجمه 5 L من درجة حرارة 60&deg;C إلى 25&deg;C ، فترسبت كتلة قدرها 1.53&times;10<sup>-5</sup> g من الملح. إذا علمت أن حاصل الإذابة K<sub>sp</sub> للملح عند 25&deg;C يساوي 1&times;10<sup>-21</sup> ، أي مما يلي يعبر عن قيمة حاصل الإذابة K<sub>sp</sub> للملح ZnS عند 60&deg;C ؟ <span class="text-sm">(ZnS=97 g/mol)</span>`,
+                options: [
+                    "<span dir='ltr'>1 &times; 10<sup>-15</sup></span>",
+                    "<span dir='ltr'>1 &times; 10<sup>-21</sup></span>",
+                    "<span dir='ltr'>3.16 &times; 10<sup>-8</sup></span>",
+                    "<span dir='ltr'>3.16 &times; 10<sup>-11</sup></span>"
+                ],
+                correctAnswer: 0,
+                explanation: `<p class="font-bold text-lg mb-2 text-blue-800">خطوات الحل التفصيلية (بطريقة تجميع الكتل):</p>
+                              <ul class="list-disc list-inside space-y-3 leading-relaxed text-base">
+                                <li><strong class="text-indigo-700">1. نحسب درجة الإذابة (التركيز) عند 25&deg;C:</strong>
+                                <br>الملح يتأين لأيونين، إذن K<sub>sp</sub> = x<sup>2</sup>
+                                <br>x = &radic;(1 &times; 10<sup>-21</sup>) = <span dir="ltr" class="font-mono bg-gray-100 px-1 rounded">3.16 &times; 10<sup>-11</sup> M</span>.</li>
+                                <li><strong class="text-indigo-700">2. نحسب كتلة الملح الذائبة في المحلول عند 25&deg;C:</strong>
+                                <br>الكتلة المتبقية ذائبة = التركيز &times; الحجم &times; الكتلة المولية
+                                <br>الكتلة = (3.16 &times; 10<sup>-11</sup>) &times; 5 &times; 97 = <span dir="ltr" class="font-mono text-red-700 font-bold">1.53 &times; 10<sup>-8</sup> g</span>.</li>
+                                <li><strong class="text-indigo-700">3. نحسب الكتلة الكلية الذائبة عند 60&deg;C:</strong>
+                                <br>الكتلة الكلية الذائبة عند 60&deg; = الكتلة المتبقية ذائبة عند 25&deg; + الكتلة المترسبة
+                                <br>الكتلة الكلية = (1.53 &times; 10<sup>-8</sup>) + (1.53 &times; 10<sup>-5</sup>) &asymp; <span dir="ltr" class="font-mono font-bold bg-yellow-100 px-1 rounded">1.53 &times; 10<sup>-5</sup> g</span> (نلاحظ أن الكتلة المتبقية ذائبة ضئيلة جداً مقارنة بالمترسبة ويمكن إهمالها تقريباً).</li>
+                                <li><strong class="text-indigo-700">4. نحسب درجة الإذابة (التركيز الكلي) عند 60&deg;C:</strong>
+                                <br>التركيز = الكتلة الكلية &divide; (الكتلة المولية &times; الحجم)
+                                <br>التركيز = (1.53 &times; 10<sup>-5</sup>) &divide; (97 &times; 5) = <span dir="ltr" class="font-mono font-bold">3.154 &times; 10<sup>-8</sup> M</span>.</li>
+                                <li><strong class="text-indigo-700">5. نحسب K<sub>sp</sub> الجديد عند 60&deg;C:</strong>
+                                <br>K<sub>sp</sub> = x<sup>2</sup> = (3.154 &times; 10<sup>-8</sup>)<sup>2</sup> &asymp; <span dir="ltr" class="font-mono bg-green-100 px-2 rounded font-bold text-green-800">1 &times; 10<sup>-15</sup></span>.</li>
+                              </ul>`,
+                optionsExplanation: [
+                    "إجابة ممتازة ودقيقة! قمت بحساب إجمالي الكتلة الذائبة عند 60 درجة ثم تحويلها لتركيز ومنها لحاصل الإذابة.",
+                    "هذه قيمة Ksp عند 25 درجة وليس عند 60 درجة.",
+                    "هذا يمثل درجة الإذابة (التركيز) للملح عند 60 درجة، وللحصول على Ksp يجب تربيع هذا الرقم.",
+                    "هذا يمثل درجة الإذابة (التركيز) للملح عند 25 درجة فقط."
+                ]
+            },
+            // 38
+            {
+                question: `عند طلاء إبريق بطبقة من الفضة كتلتها 26.25 g بإمرار تيار كهربي شدته 25 أمبير في إلكتروليت يحتوي أيونات الفضة ، أي مما يلي الزمن اللازم لإتمام هذه العملية ؟ <span class="text-sm">(Ag=108g/mol)</span>`,
+                options: [
+                    "14.2 دقيقة",
+                    "15.2 دقيقة",
+                    "15.6 دقيقة",
+                    "13.2 دقيقة"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>تطبيق قانون فاراداي: الكتلة المترسبة = (التيار × الزمن بالثواني × الكتلة المكافئة) / 96500.<br>الكتلة المكافئة للفضة = 108 / 1 = 108 جم.<br>الزمن بالثواني = (26.25 × 96500) / (25 × 108) = 2533125 / 2700 = 938.19 ثانية.<br>الزمن بالدقائق = 938.19 / 60 ≈ 15.63 دقيقة.</p>`,
+                optionsExplanation: [
+                    "ناتج حسابي خاطئ.",
+                    "قريب ولكن غير دقيق.",
+                    "إجابة ممتازة ومحسوبة بدقة بالقانون العام للتحليل الكهربي.",
+                    "رقم مستبعد رياضياً."
+                ]
+            },
+            // 39
+            {
+                question: `الشكل التالي يوضح خليتين جلفانيتين:<br>
+                <div class="flex justify-center w-full mt-6 mb-6" dir="ltr">
+                    <svg viewBox="0 0 780 340" class="w-full max-w-4xl bg-white rounded-xl shadow-sm border border-gray-200 p-2 md:p-4" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="ptr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937" />
+                            </marker>
+                        </defs>
+
+                        <!-- CELL 2 (Left) -->
+                        <g id="cell2">
+                            <!-- Liquid C -->
+                            <path d="M 65,120 L 145,120 L 145,190 A 10 10 0 0 1 135 200 L 75 200 A 10 10 0 0 1 65 190 Z" fill="#e5e7eb" stroke="none"/>
+                            <ellipse cx="105" cy="120" rx="40" ry="6" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+                            <!-- Liquid B -->
+                            <path d="M 215,120 L 295,120 L 295,190 A 10 10 0 0 1 285 200 L 225 200 A 10 10 0 0 1 215 190 Z" fill="#e5e7eb" stroke="none"/>
+                            <ellipse cx="255" cy="120" rx="40" ry="6" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+
+                            <!-- Beakers C & B outline -->
+                            <path d="M 65,90 L 65,190 A 10 10 0 0 0 75 200 L 135 200 A 10 10 0 0 0 145 190 L 145,90" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <ellipse cx="105" cy="90" rx="40" ry="6" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <path d="M 215,90 L 215,190 A 10 10 0 0 0 225 200 L 285 200 A 10 10 0 0 0 295 190 L 295,90" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <ellipse cx="255" cy="90" rx="40" ry="6" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+
+                            <!-- Salt Bridge -->
+                            <path d="M 125,170 L 125,100 A 55 55 0 0 1 235 100 L 235,170 L 215,170 L 215,100 A 35 35 0 0 0 145 100 L 145,170 Z" fill="white" stroke="#1f2937" stroke-width="2"/>
+                            <line x1="125" y1="155" x2="145" y2="155" stroke="#1f2937" stroke-width="2"/>
+                            <line x1="215" y1="155" x2="235" y2="155" stroke="#1f2937" stroke-width="2"/>
+                            <circle cx="135" cy="163" r="3" fill="none" stroke="#1f2937"/>
+                            <circle cx="225" cy="163" r="3" fill="none" stroke="#1f2937"/>
+
+                            <!-- Electrodes C & B -->
+                            <rect x="95" y="70" width="20" height="110" rx="10" fill="#6b7280" stroke="#1f2937" stroke-width="2"/>
+                            <rect x="245" y="70" width="20" height="110" rx="10" fill="#6b7280" stroke="#1f2937" stroke-width="2"/>
+
+                            <!-- Wires -->
+                            <path d="M 105,70 L 105,30 L 140,30" fill="none" stroke="#1f2937" stroke-width="2"/>
+                            <path d="M 255,70 L 255,30 L 220,30" fill="none" stroke="#1f2937" stroke-width="2"/>
+
+                            <!-- e- Arrow (C to B, points right) -->
+                            <text x="220" y="22" font-family="'Cairo', sans-serif" font-size="15" font-weight="bold" fill="#1f2937">e⁻</text>
+                            <path d="M 235,25 L 245,30 L 235,35 Z" fill="#1f2937"/>
+
+                            <!-- Voltmeter -->
+                            <rect x="140" y="15" width="80" height="30" rx="15" fill="white" stroke="#1f2937" stroke-width="2"/>
+                            <text x="180" y="36" font-family="'Cairo', sans-serif" font-size="16" font-weight="bold" fill="#111827" text-anchor="middle">1.11 V</text>
+
+                            <!-- Labels -->
+                            <text x="45" y="55" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">المادة C</text>
+                            <line x1="55" y1="60" x2="90" y2="80" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="315" y="55" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">المادة B</text>
+                            <line x1="305" y1="60" x2="270" y2="80" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="105" y="245" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">محلول المادة C</text>
+                            <line x1="105" y1="225" x2="105" y2="195" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="255" y="245" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">محلول المادة B</text>
+                            <line x1="255" y1="225" x2="255" y2="195" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <!-- Cell Box -->
+                            <rect x="125" y="275" width="110" height="40" fill="white" stroke="#1f2937" stroke-width="3"/>
+                            <text x="180" y="302" font-family="'Cairo', sans-serif" font-size="18" font-weight="bold" fill="#111827" text-anchor="middle">خلية رقم 2</text>
+                        </g>
+
+                        <!-- CELL 1 (Right) -->
+                        <g id="cell1">
+                            <!-- Liquid B -->
+                            <path d="M 485,120 L 565,120 L 565,190 A 10 10 0 0 1 555 200 L 495 200 A 10 10 0 0 1 485 190 Z" fill="#e5e7eb" stroke="none"/>
+                            <ellipse cx="525" cy="120" rx="40" ry="6" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+                            <!-- Liquid A -->
+                            <path d="M 635,120 L 715,120 L 715,190 A 10 10 0 0 1 705 200 L 645 200 A 10 10 0 0 1 635 190 Z" fill="#e5e7eb" stroke="none"/>
+                            <ellipse cx="675" cy="120" rx="40" ry="6" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+
+                            <!-- Beakers B & A outline -->
+                            <path d="M 485,90 L 485,190 A 10 10 0 0 0 495 200 L 555 200 A 10 10 0 0 0 565 190 L 565,90" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <ellipse cx="525" cy="90" rx="40" ry="6" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <path d="M 635,90 L 635,190 A 10 10 0 0 0 645 200 L 705 200 A 10 10 0 0 0 715 190 L 715,90" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+                            <ellipse cx="675" cy="90" rx="40" ry="6" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+
+                            <!-- Salt Bridge -->
+                            <path d="M 545,170 L 545,100 A 55 55 0 0 1 655 100 L 655,170 L 635,170 L 635,100 A 35 35 0 0 0 565 100 L 565,170 Z" fill="white" stroke="#1f2937" stroke-width="2"/>
+                            <line x1="545" y1="155" x2="565" y2="155" stroke="#1f2937" stroke-width="2"/>
+                            <line x1="635" y1="155" x2="655" y2="155" stroke="#1f2937" stroke-width="2"/>
+                            <circle cx="555" cy="163" r="3" fill="none" stroke="#1f2937"/>
+                            <circle cx="645" cy="163" r="3" fill="none" stroke="#1f2937"/>
+
+                            <!-- Electrodes B & A -->
+                            <rect x="515" y="70" width="20" height="110" rx="10" fill="#6b7280" stroke="#1f2937" stroke-width="2"/>
+                            <rect x="665" y="70" width="20" height="110" rx="10" fill="#6b7280" stroke="#1f2937" stroke-width="2"/>
+
+                            <!-- Wires -->
+                            <path d="M 525,70 L 525,30 L 560,30" fill="none" stroke="#1f2937" stroke-width="2"/>
+                            <path d="M 675,70 L 675,30 L 640,30" fill="none" stroke="#1f2937" stroke-width="2"/>
+
+                            <!-- e- Arrow (A to B, so points left) -->
+                            <path d="M 655,25 L 645,30 L 655,35 Z" fill="#1f2937"/>
+                            <text x="662" y="22" font-family="'Cairo', sans-serif" font-size="15" font-weight="bold" fill="#1f2937">e⁻</text>
+
+                            <!-- Voltmeter -->
+                            <rect x="560" y="15" width="80" height="30" rx="15" fill="white" stroke="#1f2937" stroke-width="2"/>
+                            <text x="600" y="36" font-family="'Cairo', sans-serif" font-size="16" font-weight="bold" fill="#111827" text-anchor="middle">0.90V</text>
+
+                            <!-- Labels -->
+                            <text x="465" y="55" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">المادة B</text>
+                            <line x1="475" y1="60" x2="510" y2="80" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="735" y="55" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">المادة A</text>
+                            <line x1="725" y1="60" x2="690" y2="80" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="525" y="245" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">محلول المادة B</text>
+                            <line x1="525" y1="225" x2="525" y2="195" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <text x="675" y="245" font-family="'Cairo', sans-serif" font-size="17" font-weight="bold" fill="#111827" text-anchor="middle">محلول المادة A</text>
+                            <line x1="675" y1="225" x2="675" y2="195" stroke="#1f2937" stroke-width="2" marker-end="url(#ptr)"/>
+
+                            <!-- Cell Box -->
+                            <rect x="545" y="275" width="110" height="40" fill="white" stroke="#1f2937" stroke-width="3"/>
+                            <text x="600" y="302" font-family="'Cairo', sans-serif" font-size="18" font-weight="bold" fill="#111827" text-anchor="middle">خلية رقم 1</text>
+                        </g>
+                    </svg>
+                </div>
+                أي مما يلي صحيح بالنسبة للأقطاب (C, B, A)؟`,
+                options: [
+                    "أقوى عامل مختزل (A)",
+                    "الاصغر في جهد الأكسدة (C)",
+                    "اقل الأقطاب نشاطاً (B)",
+                    "تزداد كتلة القطب (C)"
+                ],
+                correctAnswer: 2,
+                explanation: `<p>من اتجاه الإلكترونات (من الأنود للكاثود): في الخلية 1، الإلكترونات تنتقل من A إلى B، إذن A أنشط من B. وفي الخلية 2، الإلكترونات تنتقل من C إلى B، إذن C أنشط من B.<br>بما أن فرق الجهد في خلية (C مع B) وهو 1.11V أكبر من فرق الجهد في خلية (A مع B) وهو 0.90V، فهذا يعني أن C يسبق A في المتسلسلة.<br>الترتيب الصحيح حسب النشاط (جهد الأكسدة): C &gt; A &gt; B.<br>وبالتالي فإن القطب B هو أقل الأقطاب نشاطاً.</p>`,
+                optionsExplanation: [
+                    "أقوى عامل مختزل في هذه الأقطاب هو C وليس A.",
+                    "الأصغر في جهد الأكسدة هو القطب B وليس C.",
+                    "إجابة صحيحة ودقيقة! القطب B استقبل الإلكترونات من كلا القطبين A و C، مما يثبت أنه الأقل نشاطاً بينهما.",
+                    "القطب C يعمل كأنود في الخلية 2، وبالتالي تقل كتلته ولا تزداد."
+                ]
+            },
+            // 40
+            {
+                question: `ثلاث مركبات عضوية (A) ,(B) ,(C) لها الصيغة الجزيئية C<sub>n</sub>H<sub>2n</sub>O<sub>2</sub>:<br>(A) يتفاعل مع هيدروكسيد الصوديوم علي البارد<br>(B) لا يتفاعل مع هيدروكسيد الصوديوم علي البارد<br>(C) يحدث له تفاعل التصبن وينتج أبسط كحول<br>أي مما يلي يعد صحيحاً ؟`,
+                options: [
+                    "A : حمض البيوتيريك ، B : إيثانوات الإيثيل",
+                    "C : ميثانوات البروبيل ، B : بروبانوات الميثيل",
+                    "A : حمض 2-ميثيل بروبانويك ، C : إيثانوات الإيثيل",
+                    "C : بروبانوات الميثيل ، B : حمض البيوتانويك"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>المركبات هي أحماض وإسترات.<br>(A) يتفاعل مع القاعدة الباردة، إذن هو حمض كربوكسيلي (مثل حمض البيوتيريك).<br>(B) لا يتفاعل مع القاعدة الباردة، إذن هو إستر (مثل إيثانوات الإيثيل).<br>(C) يتصبن لينتج أبسط كحول (الميثانول)، إذن هو إستر شقه الكحولي ميثيل (مثل بروبانوات الميثيل).<br>الخيار الأنسب والذي يصف A و B بدقة هو الخيار الأول.</p>`,
+                optionsExplanation: [
+                    "إجابة دقيقة، الحمض يتفاعل على البارد والإستر لا يتفاعل.",
+                    "التصبن لـ C يجب أن يعطي الميثانول وهو أبسط كحول، ميثانوات البروبيل ستعطي بروبانول.",
+                    "إيثانوات الإيثيل تعطي إيثانول وهو ليس أبسط كحول.",
+                    "B لا يتفاعل على البارد فلا يمكن أن يكون حمض البيوتانويك."
+                ]
+            },
+
+            // 41
+            {
+                question: `أجريت العمليات التالية على المادة العضوية X على الترتيب: (أكسدة تامة - تعادل - تقطير جاف - إعادة تشكل حفزي - هدرجة تامة) ، فكان المركب بالشكل المقابل هو أحد النواتج:<br>
+                <div class="flex justify-center w-full my-6" dir="ltr">
+                    <svg viewBox="0 0 200 130" class="w-full max-w-[180px]" preserveAspectRatio="xMidYMid meet">
+                        <!-- Hexagon -->
+                        <polygon points="50,30 90,30 110,65 90,100 50,100 30,65" fill="none" stroke="#000000" stroke-width="2.5" stroke-linejoin="miter"/>
+                        
+                        <!-- Top CH3 Bond -->
+                        <line x1="90" y1="30" x2="110" y2="18" stroke="#000000" stroke-width="2.5" />
+                        <text x="115" y="20" font-family="Arial" font-size="18" font-weight="bold" fill="black">CH<tspan dy="4" font-size="13">3</tspan></text>
+                        
+                        <!-- Right CH3 Bond -->
+                        <line x1="110" y1="65" x2="135" y2="65" stroke="#000000" stroke-width="2.5" />
+                        <text x="140" y="70" font-family="Arial" font-size="18" font-weight="bold" fill="black">CH<tspan dy="4" font-size="13">3</tspan></text>
+                    </svg>
+                </div>
+                أي من المركبات التالية يمكن أن يكون المادة X ؟`,
+                options: [
+                    "4,3- ثنائي ميثيل -1- هبتانول",
+                    "3,2- ثنائي ميثيل -1- هكسانول",
+                    "4,3- ثنائي ميثيل -1- هكسانول",
+                    "5,3- ثنائي ميثيل -1- هبتانول"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>المادة X كحول أولي يُؤكسد ليعطي حمض، ثم تعادل وتقطير جاف (يُنقص ذرة كربون من السلسلة). ثم إعادة تشكل حفزي (تتطلب سلسلة من 6 ذرات كربون فأكثر لتكوين حلقة بنزين). ثم هدرجة تامة لتحويل الحلقة العطرية إلى حلقة أليفاتية.<br>كحول بـ 7 ذرات في السلسلة (هبتانول) سينتج هكسان حلقي بعد التقطير الجاف والتشكل الحفزي، وستظل التفرعات كما هي. الخيار الأنسب لتكوين حلقة هكسان مستقرة بتفرعات محددة هو مشتق الهبتانول.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة وفقاً لسلسلة التفاعلات للحصول على ألكان حلقي متفرع.",
+                    "هكسانول سيعطي سلسلة من 5 ذرات بعد التقطير الجاف، ولن تكوّن حلقة بنزين في إعادة التشكل.",
+                    "نفس المشكلة لعدد ذرات الكربون.",
+                    "مواقع التفرعات قد تعوق إعادة التشكل الحفزي المثالية."
+                ]
+            },
+            // 42
+            {
+                question: `أي الاختيارات التالية يعبر عن الترتيب الصحيح للعمليات الكيميائية اللازمة للحصول علي مادة عضوية تستخدم كمادة حافظة للطعام وتمنع نمو الفطريات؟`,
+                options: [
+                    "بلمرة ثلاثية للأسيتيلين - هلجنة فى وجود عامل حفاز - تحلل قلوي - اختزال",
+                    "إعادة تشكيل حفزي للهكسان - ألكلة - أكسدة - تعادل",
+                    "اختزال الفينول - ألكلة - أكسدة - اختزال",
+                    "تقطير تجزيئي لقطران الفحم - هلجنة في وجود عامل حفاز - تحلل قلوي - ألكلة"
+                ],
+                correctAnswer: 1,
+                explanation: `<p>المادة الحافظة للطعام هي <strong>بنزوات الصوديوم</strong>. للحصول عليها:<br>
+                1- <strong>إعادة تشكيل حفزي للهكسان:</strong> يعطي بنزين عطري.<br>
+                2- <strong>ألكلة (تفاعل فريدل-كرافتس):</strong> تحويل البنزين إلى طولوين (ميثيل بنزين).<br>
+                3- <strong>أكسدة الطولوين:</strong> باستخدام خامس أكسيد الفاناديوم ليعطي حمض البنزويك.<br>
+                4- <strong>تعادل حمض البنزويك:</strong> مع هيدروكسيد الصوديوم ليعطي الملح المطلوب (بنزوات الصوديوم).</p>`,
+                optionsExplanation: [
+                    "هذه الخطوات لا تؤدي إلى بنزوات الصوديوم.",
+                    "إجابة نموذجية! هكسان &rarr; بنزين &rarr; طولوين &rarr; حمض بنزويك &rarr; بنزوات صوديوم.",
+                    "الخطوة الأخيرة اختزال ستعيدنا للكحول أو الألدهيد وليس الملح.",
+                    "خطوات تقود للفينول ومشتقاته وليس لبنزوات الصوديوم."
+                ]
+            },
+            // 43
+            {
+                question: `الصيغة العامة <span dir="ltr">C<sub>4</sub>H<sub>10</sub>O</span> تعبر عن ثلاث ايزوميرات كحولية (A) , (B) , (C)<br>
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl my-4 text-gray-800 font-bold leading-relaxed">
+                    <span class="text-blue-700">(A) :</span> يحتوي علي مجموعتين ميثيل.<br>
+                    <span class="text-blue-700">(B) :</span> يحتوي علي ثلاث مجموعات ميثيل<br>
+                    <span class="text-blue-700">(C) :</span> يحتوي علي مجموعة ميثيل واحدة
+                </div>
+                <span class="text-red-700 font-bold block text-center mb-4">أي الاختيارات التالية يعبر عن الإسم الأيوباك الصحيح لناتج اضافة برمنجانات البوتاسيوم المحمضة لكل من (A) , (B) , (C)؟</span>
+                
+                <!-- رأس الجدول (يظهر في الشاشات الكبيرة) -->
+                <div class="hidden md:grid grid-cols-3 gap-2 text-center font-bold bg-blue-100 p-3 rounded-t-xl border border-blue-200 text-[13px] md:text-[15px]">
+                    <div>الناتج من التفاعل مع A</div>
+                    <div class="border-r border-blue-300 pr-2">الناتج من التفاعل مع B</div>
+                    <div class="border-r border-blue-300 pr-2">الناتج من التفاعل مع C</div>
+                </div>`,
+                options: [
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من A:</span>2-بيوتانون</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من B:</span>2-ميثيل -بروبانويك</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من C:</span>لا يحدث تفاعل</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من A:</span>2-ميثيل -بروبانويك</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من B:</span>لا يحدث تفاعل</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من C:</span>2-بيوتانون</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من A:</span>لا يحدث تفاعل</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من B:</span>2-ميثيل -بروبانويك</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من C:</span>2- بيوتانون</div></div>",
+                    "<div class='flex flex-col md:flex-row w-full text-center text-[13px] md:text-[15px] font-bold'><div class='flex-1 p-2'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من A:</span>2-ميثيل بروبانويك</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من B:</span>لا يحدث تفاعل</div><div class='flex-1 p-2 md:border-r border-gray-300'><span class='md:hidden font-extrabold text-blue-700 block mb-1'>الناتج من C:</span>حمض بيوتانويك</div></div>"
+                ],
+                correctAnswer: 3,
+                explanation: `<p class="font-bold text-lg mb-2 text-blue-800">تحليل الأيزومرات ونواتج الأكسدة:</p>
+                              <ul class="list-disc list-inside space-y-3 leading-relaxed">
+                                <li><strong>الكحول (B):</strong> يحتوي على 3 مجموعات ميثيل. هذا يعني أنه كحول ثالثي (2-ميثيل-2-بروبانول). <strong>الكحولات الثالثية لا تتأكسد</strong> في هذه الظروف، لذا ناتجه "لا يحدث تفاعل".</li>
+                                <li><strong>الكحول (C):</strong> يحتوي على مجموعة ميثيل واحدة. هذا يعني أنه كحول أولي سلسلته مستقيمة (1-بيوتانول). أكسدته التامة تعطي حمض كربوكسيلي مقابل وهو <strong>حمض بيوتانويك</strong>.</li>
+                                <li><strong>الكحول (A):</strong> يحتوي على مجموعتين ميثيل. قد يكون (2-بيوتانول) أو (2-ميثيل-1-بروبانول). ولكن بما أن الخيار (د) أثبت صحته في B و C، فإن أكسدة (2-ميثيل-1-بروبانول) الأولي ستعطي <strong>2-ميثيل بروبانويك</strong>.</li>
+                              </ul>`,
+                optionsExplanation: [
+                    "خطأ، ناتج B لا يمكن أن يكون حمض لأن الكحول بـ 3 مجموعات ميثيل هو كحول ثالثي لا يتأكسد.",
+                    "خطأ، الكحول C به مجموعة ميثيل واحدة (1-بيوتانول)، لذا يتأكسد لحمض بيوتانويك وليس كيتون (2-بيوتانون).",
+                    "خطأ، الكحول B هو الذي لا يتأكسد وليس A.",
+                    "إجابة صحيحة 100%! الكحول B (ثالثي) لا يتأكسد، والكحول C (1-بيوتانول) يتأكسد لحمض بيوتانويك."
+                ]
+            },
+            // 44
+            {
+                question: `أي الكحولات التالية يتأكسد بثاني كرومات البوتاسيوم المحمضة ، و عند نزع الماء منه بحمض كبريتيك مركز عند 180 لا يعطي -2- ميثيل - 1- بيوتين؟`,
+                options: [
+                    "3,3- ثنائي ميثيل -2- بيوتانول",
+                    "2,2- ثنائي ميثيل -1- بروبانول",
+                    "2 - ميثيل -2- بروبانول",
+                    "2 - ميثيل -1- بيوتانول"
+                ],
+                correctAnswer: 0,
+                explanation: `<p>الكحول (3,3-ثنائي ميثيل-2-بيوتانول) هو كحول ثانوي، لذا فهو <strong>يتأكسد</strong>. وعند نزع الماء منه يحدث إعادة ترتيب (Methyl shift) ليعطي 2,3-ثنائي ميثيل-2-بيوتين و 2,3-ثنائي ميثيل-1-بيوتين، ولا يعطي أبداً 2-ميثيل-1-بيوتين.<br>أما (2-ميثيل-2-بروبانول) فهو ثالثي لا يتأكسد.<br>والبقية كحولات أولية تتأكسد وتعطي 2-ميثيل-1-بيوتين عند نزع الماء منها أو بعد إعادة الترتيب.</p>`,
+                optionsExplanation: [
+                    "إجابة صحيحة، يتأكسد لأنه ثانوي، ونزع الماء منه يعطي مشتقات 2,3-ثنائي ميثيل.",
+                    "كحول أولي يتأكسد، وعند نزع الماء يحدث إعادة ترتيب ليعطي 2-ميثيل-2-بيوتين و 2-ميثيل-1-بيوتين.",
+                    "كحول ثالثي لا يتأكسد أصلاً.",
+                    "كحول أولي يتأكسد، ونزع الماء منه يعطي 2-ميثيل-1-بيوتين و 2-ميثيل-2-بيوتين."
+                ]
+            },
+            // 45
+            {
+                type: 'essay',
+                question: `<div class="bg-red-600 text-white p-2 rounded-t-xl font-bold text-center text-xl mb-4 w-fit px-8 shadow-sm">أسئلة مقالية :-</div>
+                <div class="text-red-700 font-bold text-xl mb-4">45- المخطط التالى يعبر عن بعض تفاعلات الحديد و مركباته :</div>
+                
+                <div class="flex justify-center w-full my-6 overflow-x-auto" dir="ltr" style="scrollbar-width: none;">
+                    <svg viewBox="0 0 600 280" class="w-full max-w-2xl min-w-[500px]" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrow-q45" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                            </marker>
+                        </defs>
+
+                        <!-- Boxes -->
+                        <rect x="120" y="40" width="70" height="40" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="155" y="65" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">A</text>
+
+                        <rect x="270" y="40" width="60" height="40" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="300" y="65" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">C</text>
+
+                        <rect x="420" y="40" width="110" height="40" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="475" y="65" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">B (Black)</text>
+
+                        <rect x="270" y="180" width="60" height="40" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="300" y="208" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">D</text>
+
+                        <!-- Arrows -->
+                        <!-- A to C -->
+                        <line x1="190" y1="60" x2="265" y2="60" stroke="black" stroke-width="2" marker-end="url(#arrow-q45)"/>
+                        <text x="227" y="52" font-family="Arial" font-size="16" font-weight="bold" fill="black" text-anchor="middle">H<tspan dy="3" font-size="11">2</tspan><tspan dy="-3">SO</tspan><tspan dy="3" font-size="11">4</tspan></text>
+                        <text x="227" y="75" font-family="Arial" font-size="16" font-weight="bold" fill="black" text-anchor="middle">Dil.</text>
+
+                        <!-- B to C -->
+                        <line x1="420" y1="60" x2="335" y2="60" stroke="black" stroke-width="2" marker-end="url(#arrow-q45)"/>
+                        <text x="377" y="52" font-family="Arial" font-size="16" font-weight="bold" fill="black" text-anchor="middle">H<tspan dy="3" font-size="11">2</tspan><tspan dy="-3">SO</tspan><tspan dy="3" font-size="11">4</tspan></text>
+                        <text x="377" y="75" font-family="Arial" font-size="16" font-weight="bold" fill="black" text-anchor="middle">Dil.</text>
+
+                        <!-- C to D -->
+                        <line x1="300" y1="80" x2="300" y2="175" stroke="black" stroke-width="2" marker-end="url(#arrow-q45)"/>
+                        <text x="315" y="132" font-family="Arial" font-size="16" font-weight="bold" fill="black" text-anchor="middle">Δ</text>
+
+                        <!-- B to D -->
+                        <line x1="460" y1="80" x2="335" y2="195" stroke="black" stroke-width="2" marker-end="url(#arrow-q45)"/>
+                        <text x="405" y="150" font-family="'Cairo', sans-serif" font-size="18" font-weight="bold" fill="black" text-anchor="middle" transform="rotate(38 405 150)">عملية (1)</text>
+
+                        <!-- D to A -->
+                        <line x1="270" y1="200" x2="145" y2="85" stroke="black" stroke-width="2" marker-end="url(#arrow-q45)"/>
+                        <text x="195" y="155" font-family="'Cairo', sans-serif" font-size="18" font-weight="bold" fill="black" text-anchor="middle" transform="rotate(-40 195 155)">عملية (2)</text>
+                    </svg>
+                </div>
+                
+                <div class="text-red-700 font-bold text-xl leading-loose" dir="rtl">
+                    <span class="border-b-2 border-red-700 pb-1">(أ) أذكر اسم كل من العملية رقم (1) والعملية رقم (2).</span><br>
+                    <span class="border-b-2 border-red-700 pb-1">(ب) اكتب الصيغة الكيميائية لكل من (C) و (D)</span>
+                </div>`,
+                explanation: `<p><strong>(أ) إجابة الجزء الأول:</strong><br>
+                العملية (1): <strong>عملية أكسدة</strong> (لأن المادة B السوداء تتأكسد لتعطي المادة D).<br>
+                العملية (2): <strong>عملية اختزال</strong> (لأن المادة D تُختزل لتعطي الحديد A).<br><br>
+                <strong>(ب) إجابة الجزء الثاني:</strong><br>
+                المركب (C): <strong><span dir="ltr">FeSO<sub>4</sub></span></strong> (كبريتات الحديد II).<br>
+                المركب (D): <strong><span dir="ltr">Fe<sub>2</sub>O<sub>3</sub></span></strong> (أكسيد الحديد III - الهيماتيت).</p>
+                <div class="mt-4 p-4 bg-yellow-100 rounded-lg text-sm text-yellow-900 border border-yellow-300">
+                    <i class="fa-solid fa-lightbulb"></i> <strong>تحليل المخطط:</strong> الحديد (A) يتفاعل مع حمض الكبريتيك المخفف ليعطي (FeSO₄) وهو (C). أكسيد الحديد المغناطيسي أو الثنائي الأسود (B) يتفاعل أيضاً مع الحمض المخفف (إذن هو FeO) ليعطي نفس الملح (C). تسخين FeSO₄ (C) يعطي أكسيد الحديد الثلاثي (D) ذو اللون الأحمر. اختزال (D) عند أعلى من 700 يعطي الحديد (A). وأكسدة (B) تعطي (D).
+                </div>`
+            },
+            // 46
+            {
+                type: 'essay',
+                question: `<div class="text-red-700 font-bold text-xl mb-4">46- ادرس المخطط التالي:-</div>
+                
+                <div class="flex justify-center w-full my-6 overflow-x-auto" dir="ltr" style="scrollbar-width: none;">
+                    <svg viewBox="0 0 800 120" class="w-full max-w-4xl min-w-[700px]" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrow-q46" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                            </marker>
+                        </defs>
+
+                        <!-- Boxes -->
+                        <rect x="20" y="30" width="100" height="50" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="70" y="60" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">(A)</text>
+
+                        <rect x="200" y="30" width="100" height="50" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="250" y="60" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">(B)</text>
+
+                        <rect x="360" y="30" width="90" height="50" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="405" y="60" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">(D)</text>
+
+                        <rect x="530" y="30" width="130" height="50" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="595" y="60" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">C<tspan dy="5" font-size="14">n</tspan><tspan dy="-5">H</tspan><tspan dy="5" font-size="14">2n+2</tspan><tspan dy="-5">O</tspan><tspan dy="5" font-size="14">2</tspan></text>
+
+                        <rect x="710" y="30" width="80" height="50" fill="white" stroke="black" stroke-width="2"/>
+                        <text x="750" y="60" font-family="Arial" font-size="20" font-weight="bold" fill="black" text-anchor="middle">(F)</text>
+
+                        <!-- Arrows -->
+                        <line x1="120" y1="55" x2="195" y2="55" stroke="black" stroke-width="2" marker-end="url(#arrow-q46)"/>
+                        <text x="160" y="45" font-family="'Cairo', sans-serif" font-size="16" font-weight="bold" fill="black" text-anchor="middle">تخمر</text>
+                        <text x="160" y="72" font-family="'Cairo', sans-serif" font-size="16" font-weight="bold" fill="black" text-anchor="middle">كحولي</text>
+
+                        <line x1="300" y1="55" x2="355" y2="55" stroke="black" stroke-width="2" marker-end="url(#arrow-q46)"/>
+                        <text x="328" y="48" font-family="Arial" font-size="18" font-weight="bold" fill="black" text-anchor="middle">(C)</text>
+
+                        <line x1="450" y1="55" x2="525" y2="55" stroke="black" stroke-width="2" marker-end="url(#arrow-q46)"/>
+                        <text x="488" y="48" font-family="Arial" font-size="18" font-weight="bold" fill="black" text-anchor="middle">H<tspan dy="4" font-size="12">2</tspan><tspan dy="-4">O</tspan><tspan dy="4" font-size="12">2</tspan></text>
+
+                        <line x1="660" y1="55" x2="705" y2="55" stroke="black" stroke-width="2" marker-end="url(#arrow-q46)"/>
+                        <text x="683" y="48" font-family="Arial" font-size="18" font-weight="bold" fill="black" text-anchor="middle">(E)</text>
+                    </svg>
+                </div>
+                
+                <div class="text-red-700 font-bold text-xl leading-loose" dir="rtl">
+                    <span class="text-black">- إذا علمت أن (F) حمض كربوكسيلي ثنائي القاعدية</span><br>
+                    (أ) أكتب أسم كل من المركبات العضوية (A) و (D)<br>
+                    (ب) أذكر اسم العمليات (C) و (E)
+                </div>`,
+                explanation: `<p><strong>(أ) إجابة الجزء الأول:</strong><br>
+                المركب (A): <strong>الجلوكوز</strong> (أو السكروز كبداية للتخمر).<br>
+                المركب (D): <strong>الإيثين</strong> (غاز الإيثيلين C₂H₄).<br><br>
+                <strong>(ب) إجابة الجزء الثاني:</strong><br>
+                العملية (C): <strong>عملية نزع ماء</strong> (بواسطة حمض كبريتيك مركز عند 180 درجة).<br>
+                العملية (E): <strong>عملية أكسدة تامة</strong>.<br></p>
+                <div class="mt-4 p-4 bg-yellow-100 rounded-lg text-sm text-yellow-900 border border-yellow-300">
+                    <i class="fa-solid fa-lightbulb"></i> <strong>تحليل المخطط:</strong> تخمر الجلوكوز (A) يعطي كحول إيثيلي (B). نزع الماء من الإيثانول (العملية C) يعطي غاز الإيثين (D). تفاعل الإيثين مع بيروكسيد الهيدروجين يعطي إيثيلين جليكول (C₂H₆O₂). الأكسدة التامة (العملية E) للإيثيلين جليكول تعطي حمض الأكساليك (F) وهو حمض ثنائي القاعدية.
+                </div>`
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const totalQuestions = quizData.length;
+        const questionStatus = Array(totalQuestions).fill('unanswered'); 
+        const userSelectedAnswers = Array(totalQuestions).fill(null);
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep(freq, type, duration, vol) {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = type;
+            oscillator.frequency.value = freq;
+            gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + duration);
+        }
+
+        function playSuccessSound() {
+            playBeep(523.25, 'sine', 0.1, 0.5); 
+            setTimeout(() => playBeep(659.25, 'sine', 0.2, 0.5), 100); 
+            setTimeout(() => playBeep(783.99, 'sine', 0.4, 0.5), 200); 
+        }
+
+        function playErrorSound() {
+            playBeep(300, 'sawtooth', 0.3, 0.5);
+            setTimeout(() => playBeep(250, 'sawtooth', 0.4, 0.5), 200);
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.5 },
+                colors: ['#3b82f6', '#10b981', '#fbbf24']
+            });
+        }
+
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const explainBtn = document.getElementById('explain-btn');
+        const explanationContainer = document.getElementById('explanation-container');
+        const progressBar = document.getElementById('progress-bar');
+        const questionTracker = document.getElementById('question-tracker');
+        const scoreTracker = document.getElementById('score-tracker');
+        const navGrid = document.getElementById('navigation-grid');
+
+        const correctMotivations = [
+            "أحسنت يا بطل! تفكير دقيق وتحليل كيميائي ممتاز. 🌟",
+            "رائع جداً! أنت تثبت أنك مشروع كيميائي كبير. 🔬",
+            "إجابة نموذجية! استمر بهذا التركيز العالي. 🎯",
+            "برافو! لقد فهمت الفكرة العلمية بامتياز. 👏",
+            "مذهل! ذكاؤك العلمي يتطور بشكل ملحوظ. 🚀"
+        ];
+        
+        const wrongMotivations = [
+            "لا بأس يا بطل، الخطأ هو الخطوة الأولى للتعلم العميق. ركز معي في الشرح: 💡",
+            "محاولة جيدة! دعنا نكتشف معاً السر الكيميائي وراء هذا السؤال: 🔍",
+            "سؤال مخادع قليلاً، أليس كذلك؟ تعال نبسط الفكرة: 🧩",
+            "لا تقلق، كلنا نتعلم من أخطائنا. انظر إلى هذا التحليل المبسط: 📚",
+            "اقتربت جداً من الإجابة! دعني أوضح لك القاعدة الكيميائية الصحيحة: 🧪"
+        ];
+
+        function renderNavigationGrid() {
+            navGrid.innerHTML = '';
+            for (let i = 0; i < totalQuestions; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i + 1;
+                btn.className = `nav-btn h-12 rounded-xl font-bold border-2 flex items-center justify-center text-base hover:opacity-80 transition-all ${questionStatus[i]} ${i === currentQuestionIndex ? 'active' : ''}`;
+                btn.onclick = () => jumpToQuestion(i);
+                navGrid.appendChild(btn);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestionIndex = index;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            renderNavigationGrid();
+            const q = quizData[currentQuestionIndex];
+            const hasAnsweredCurrent = questionStatus[currentQuestionIndex] !== 'unanswered';
+            
+            explanationContainer.classList.remove('show');
+            explanationContainer.innerHTML = '';
+            
+            if (hasAnsweredCurrent) {
+                confirmBtn.classList.add('hidden');
+                explainBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+                
+                // بالنسبة للسؤال المقالي نعتبر الإجابة صحيحة لتشجيع الطالب عند المراجعة
+                const isCorrect = q.type === 'essay' ? true : userSelectedAnswers[currentQuestionIndex] === q.correctAnswer;
+                
+                const motivationText = isCorrect
+                    ? correctMotivations[currentQuestionIndex % correctMotivations.length]
+                    : wrongMotivations[currentQuestionIndex % wrongMotivations.length];
+
+                let analysisHTML = '';
+                // تحليل الخيارات يظهر فقط في الأسئلة الاختيارية
+                if (q.optionsExplanation && q.type !== 'essay') {
+                    const optionLetters = ['أ', 'ب', 'ج', 'د'];
+                    analysisHTML = `<div class="mt-6 space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
+                        <h5 class="font-black text-indigo-900 mb-4 flex items-center gap-3 border-b-2 border-indigo-100 pb-3 text-xl">
+                            <i class="fa-solid fa-magnifying-glass-chart text-indigo-600 text-2xl"></i> تحليل الخيارات علمياً:
+                        </h5>`;
+                    q.options.forEach((opt, idx) => {
+                        const isOptCorrect = idx === q.correctAnswer;
+                        const icon = isOptCorrect ? '<i class="fa-solid fa-circle-check text-green-600 text-2xl"></i>' : '<i class="fa-solid fa-circle-xmark text-red-500 text-2xl"></i>';
+                        const color = isOptCorrect ? 'bg-green-100 border-green-300 text-green-900 shadow-md' : 'bg-red-50 border-red-200 text-red-900 opacity-95';
+                        analysisHTML += `
+                            <div class="p-4 rounded-xl border-2 ${color} transition-all hover:scale-[1.01]">
+                                <strong class="flex items-center gap-3 leading-relaxed text-lg" dir="rtl">
+                                    ${icon} 
+                                    <span class="bg-white/70 px-3 py-0.5 rounded-lg shadow-sm border border-black/10 text-sm">${optionLetters[idx]}</span> 
+                                    <span dir="auto" class="flex-grow">${opt}</span>
+                                </strong>
+                                <p class="mt-3 text-sm md:text-base font-bold pr-12 border-r-4 ${isOptCorrect ? 'border-green-500 text-green-800' : 'border-red-400 text-red-800'} leading-relaxed" dir="rtl">${q.optionsExplanation[idx]}</p>
+                            </div>`;
+                    });
+                    analysisHTML += `</div>`;
+                }
+
+                explanationContainer.innerHTML = `
+                    <div class="flex flex-col md:flex-row gap-6 p-8 bg-white rounded-2xl shadow-xl border-r-8 ${isCorrect ? 'border-green-500' : 'border-blue-500'}">
+                        <div class="flex-shrink-0 flex justify-center md:justify-start">
+                            <div class="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center border-4 border-blue-200 shadow-md relative">
+                                <i class="fa-solid fa-user-tie text-5xl text-blue-700"></i>
+                                <span class="absolute -bottom-2 -right-3 text-4xl animate-bounce">${isCorrect ? '✨' : '👨‍🏫'}</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow w-full">
+                            <h4 class="text-2xl md:text-3xl font-black mb-5 ${isCorrect ? 'text-green-700' : 'text-blue-800'} border-b pb-4">
+                                ${q.type === 'essay' ? 'الإجابة النموذجية:' : motivationText}
+                            </h4>
+                            <div class="text-gray-800 leading-relaxed mb-6 text-lg md:text-xl font-bold bg-blue-50/60 p-6 rounded-xl border border-blue-100 shadow-sm relative">
+                                <i class="fa-solid fa-quote-right absolute top-4 left-4 text-blue-200 text-5xl opacity-40"></i>
+                                ${q.explanation}
+                            </div>
+                            ${analysisHTML}
+                        </div>
+                    </div>
+                `;
+            } else {
+                confirmBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+                explainBtn.classList.add('hidden');
+                confirmBtn.disabled = true;
+                confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            if (currentQuestionIndex === totalQuestions - 1 && hasAnsweredCurrent) {
+                nextBtn.innerHTML = `إنهاء الاختبار <i class="fa-solid fa-flag-checkered text-xl"></i>`;
+            } else if (hasAnsweredCurrent) {
+                nextBtn.innerHTML = `السؤال التالي <i class="fa-solid fa-arrow-left"></i>`;
+            }
+
+            questionTextEl.innerHTML = `<span class="bg-gray-200 text-gray-700 py-1.5 px-4 rounded-xl text-base font-black shadow-sm mb-4 inline-block">السؤال ${currentQuestionIndex + 1}</span><br> <div class="leading-loose block question-body-text" dir="rtl">${q.question}</div>`;
+            
+            optionsContainer.innerHTML = '';
+            
+            // تحقق من نوع السؤال (مقالي أم اختياري)
+            if (q.type === 'essay') {
+                optionsContainer.innerHTML = `
+                    <div class="w-full mt-4">
+                        <label for="essay-answer-${currentQuestionIndex}" class="block text-gray-700 text-lg font-bold mb-3"><i class="fa-solid fa-pen-to-square text-blue-600"></i> مساحة الإجابة:</label>
+                        <textarea id="essay-answer-${currentQuestionIndex}" class="w-full h-48 p-4 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-0 resize-none text-lg font-bold shadow-inner bg-gray-50" placeholder="اكتب تفاصيل إجابتك هنا..." ${hasAnsweredCurrent ? 'readonly' : ''} oninput="enableConfirm()">${userSelectedAnswers[currentQuestionIndex] || ''}</textarea>
+                    </div>
+                `;
+            } else {
+                const optionLetters = ['أ', 'ب', 'ج', 'د'];
+                q.options.forEach((opt, index) => {
+                    const isSelected = userSelectedAnswers[currentQuestionIndex] === index;
+                    const isCorrect = q.correctAnswer === index;
+                    
+                    let extraClasses = '';
+                    let iconHTML = '';
+                    
+                    if (hasAnsweredCurrent) {
+                        if (isCorrect) {
+                            extraClasses = 'correct-answer';
+                            iconHTML = `<i class="fa-solid fa-circle-check text-green-600 text-3xl"></i>`;
+                        } else if (isSelected && !isCorrect) {
+                            extraClasses = 'wrong-answer';
+                            iconHTML = `<i class="fa-solid fa-circle-xmark text-red-600 text-3xl"></i>`;
+                        }
+                    }
+
+                    const optDiv = document.createElement('div');
+                    optDiv.className = 'w-full';
+                    optDiv.innerHTML = `
+                        <input type="radio" name="option" id="opt-${index}" value="${index}" class="option-radio hidden" 
+                               ${isSelected ? 'checked' : ''} 
+                               ${hasAnsweredCurrent ? 'disabled' : ''} 
+                               onchange="enableConfirm()">
+                        <label for="opt-${index}" class="option-label ${extraClasses}">
+                            <span class="option-letter">
+                                ${optionLetters[index]}
+                            </span>
+                            <div class="opt-content" dir="rtl">
+                                ${opt}
+                            </div>
+                            <div class="absolute left-4 transform scale-110">
+                                ${iconHTML}
+                            </div>
+                        </label>
+                    `;
+                    optionsContainer.appendChild(optDiv);
+                });
+            }
+
+            const answeredCount = questionStatus.filter(s => s !== 'unanswered').length;
+            const progressPercent = (answeredCount / totalQuestions) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            questionTracker.innerText = `تمت الإجابة: ${answeredCount} من ${totalQuestions}`;
+            scoreTracker.innerText = `النقاط: ${score}`;
+        }
+
+        function enableConfirm() {
+            if (questionStatus[currentQuestionIndex] === 'unanswered') {
+                const q = quizData[currentQuestionIndex];
+                if (q.type === 'essay') {
+                    const textarea = document.getElementById(`essay-answer-${currentQuestionIndex}`);
+                    if (textarea && textarea.value.trim() !== '') {
+                        confirmBtn.disabled = false;
+                        confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        confirmBtn.disabled = true;
+                        confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+                } else {
+                    confirmBtn.disabled = false;
+                    confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        function confirmAnswer() {
+            const q = quizData[currentQuestionIndex];
+            
+            if (q.type === 'essay') {
+                const textarea = document.getElementById(`essay-answer-${currentQuestionIndex}`);
+                if (!textarea || textarea.value.trim() === '' || questionStatus[currentQuestionIndex] !== 'unanswered') return;
+                
+                userSelectedAnswers[currentQuestionIndex] = textarea.value;
+                score++; // نعطي الطالب درجة على محاولته في السؤال المقالي
+                questionStatus[currentQuestionIndex] = 'correct';
+                playSuccessSound();
+                triggerConfetti();
+                
+            } else {
+                const selectedOption = document.querySelector('input[name="option"]:checked');
+                if (!selectedOption || questionStatus[currentQuestionIndex] !== 'unanswered') return;
+
+                const selectedIndex = parseInt(selectedOption.value);
+                userSelectedAnswers[currentQuestionIndex] = selectedIndex;
+
+                if (selectedIndex === q.correctAnswer) {
+                    score++;
+                    questionStatus[currentQuestionIndex] = 'correct';
+                    playSuccessSound();
+                    triggerConfetti();
+                } else {
+                    questionStatus[currentQuestionIndex] = 'wrong';
+                    playErrorSound();
+                }
+            }
+
+            loadQuestion();
+            setTimeout(() => explanationContainer.classList.add('show'), 100);
+        }
+
+        function toggleExplanation() {
+            explanationContainer.classList.toggle('show');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < totalQuestions - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                const unansweredCount = questionStatus.filter(s => s === 'unanswered').length;
+                if (unansweredCount > 0) {
+                    alert(`يتبقى لك ${unansweredCount} سؤال لم تجب عليها. راجع القائمة الجانبية.`);
+                } else {
+                    showResults();
+                }
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.querySelector('.w-full.md\\:w-1\\/4').classList.add('hidden');
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.classList.remove('hidden');
+            
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('total-score').innerText = totalQuestions;
+            progressBar.style.width = `100%`;
+
+            const percentage = (score / totalQuestions) * 100;
+            const messageEl = document.getElementById('motivational-message');
+            
+            if (percentage >= 90) {
+                messageEl.className = "text-xl font-black p-8 rounded-2xl mb-10 w-full max-w-2xl leading-relaxed bg-green-100 text-green-800 border-2 border-green-300 shadow-lg";
+                messageEl.innerHTML = `<i class="fa-solid fa-crown text-5xl mb-4 block text-green-600"></i>ممتاز جداً يا بطل! مستواك يدل على فهم عميق لمادة الكيمياء. استمر على هذا الأداء الراقي!`;
+                triggerConfetti();
+                setTimeout(triggerConfetti, 1000);
+            } else if (percentage >= 70) {
+                messageEl.className = "text-xl font-bold p-8 rounded-2xl mb-10 w-full max-w-2xl leading-relaxed bg-blue-100 text-blue-800 border-2 border-blue-300 shadow-lg";
+                messageEl.innerHTML = `<i class="fa-solid fa-thumbs-up text-5xl mb-4 block text-blue-600"></i>أداء جيد جداً! أنت على الطريق الصحيح، فقط راجع الأخطاء البسيطة.`;
+            } else if (percentage >= 50) {
+                messageEl.className = "text-xl font-bold p-8 rounded-2xl mb-10 w-full max-w-2xl leading-relaxed bg-yellow-100 text-yellow-800 border-2 border-yellow-300 shadow-lg";
+                messageEl.innerHTML = `<i class="fa-solid fa-person-running text-5xl mb-4 block text-yellow-600"></i>مجهود طيب، لكنك تحتاج لتركيز أكبر في التفاصيل وقراءة المخططات. لا تيأس، اقرأ الشروحات بدقة.`;
+            } else {
+                messageEl.className = "text-xl font-bold p-8 rounded-2xl mb-10 w-full max-w-2xl leading-relaxed bg-red-100 text-red-800 border-2 border-red-300 shadow-lg";
+                messageEl.innerHTML = `<i class="fa-solid fa-book-open text-5xl mb-4 block text-red-600"></i>هذه ليست نهايتك، إنها نقطة البداية الحقيقية! يبدو أنك تحتاج إلى مراجعة الأساسيات مرة أخرى بهدوء.`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
